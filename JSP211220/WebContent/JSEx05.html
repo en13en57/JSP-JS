@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상등 연산자</title>
+<script type="text/javascript">
+	i = 1;
+	j = '1';
+	
+	// 값만 비교
+	document.write(( i == j ) + "<br>"); // true
+	document.write(( i != j ) + "<br><hr>"); // false
+
+	// ===, !== : 자료형과 값이 모두 일치하는지 검사!
+	document.write(( i === j ) + "<br>"); // false
+	document.write(( i !== j ) + "<br><hr>"); // true
+
+	// 비트 와이즈 연산자
+	document.write((3|5) + "<br>"); 
+	document.write((3&5) + "<br>"); 
+	document.write((3^5) + "<br>"); 
+	// Shift연산자
+	document.write((2 << 4) + "<br>"); // n << m : n * 2 의 m승
+	document.write((26 >> 2) + "<br>"); // n >> m : n / 2의 m승
+	
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

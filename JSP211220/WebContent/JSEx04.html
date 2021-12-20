@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>변수의 선언</title>
+<script type="text/javascript">
+	var i=100; // 전역변수 : 선언 이후 어디에서든 사용 가능
+	ii = 200;  // 전역변수  
+	
+	function fn(){ // 함수 작성
+		var j=300; // 지역변수 : 함수 안에서만 사용가능
+		jj = 400;  // 전역변수 : 함수 호출 후 어디서든 사용 가능
+		
+		var i = 999; // 지역변수 
+		document.write("i = " + i + "<br>");
+		document.write("ii = " + ii + "<br>");
+		document.write("j = " + j + "<br>");
+		document.write("jj = " + jj + "<br><br><hr>");
+	}
+		// 함수 안에서 선언된 전역변수는 함수 호출 이후에만 사용 가능	
+		// document.write("j = " + j + "<br>");
+		
+		fn(); // 함수 호출
+		
+		// document.write("j = " + j + "<br>");
+		// document.write("jj = " + jj + "<br><br><hr>");
+
+		document.write("i = " + i + "<br>");
+		document.write("ii = " + ii + "<br>");
+		// document.write("j = " + j + "<br>");
+		document.write("jj = " + jj + "<br><br><hr>");
+		
+</script>
+</head>
+<body>
+
+</body>
+</html>

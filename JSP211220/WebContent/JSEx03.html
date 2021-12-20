@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	// 내부적으로 자료의 타입은 존재하지만 선언시 자료형을 결정하지는 않습니다.
+	// 어떤 타입이든 모든 변수에 저장이 가능하다. : 동적 타이핑 언어: 실행시 타입이 결정되는 언어
+	a=10; // number : 정수/실수의 구분이 없다.
+	document.write("a = " + a + " : " + typeof(a) + "<br>"); // typeof 연산자 : 타입을 알려준다.
+
+	a=3.14; // number
+	document.write("a = " + a + " : " + typeof(a) + "<br>");
+
+	a='문자열'; // string
+	document.write("a = " + a + " : " + typeof(a) + "<br>");
+	
+	a=true; // booldean
+	document.write("a = " + a + " : " + typeof(a) + "<br>");
+
+	a=[1, 2, 3, 4, 5]; // 배열 : object
+	document.write("a = " + a + " : " + typeof(a) + "<br>");
+
+	a=function(){}; // function : 함수도 자료형이다
+	document.write("a = " + a + " : " + typeof(a) + "<br>");
+	
+	a= {"name":"한사람","age":34, "gender":true} // 객체 : object
+	document.write("a = " + a + " : " + typeof(a) + "<br>");
+	
+	document.write(a.name + "(" + a.age + "," + (a.gender ? "남" : "여") + ")");
+	
+	// 숫자타입에 정수/실수 구분이 없기 때문에 주의해야 합니다.
+	document.write(10/3 + "<br>"); // 숫자 연상의 결과는 number타입 : double
+	
+	// 자동 형변환에 주의해야 한다. 
+	document.write(1 + '1' + "<br>") // 1 + '1' = '1' + '1' = 11  (혼자 문자+문자)
+	document.write(1 - '1' + "<br>") // 1 - '1' = 1 - 1 = 0
+	document.write(1 * '1' + "<br>") // 1 * '1' = 1 * 1 = 1
+	document.write(1 / '1' + "<br><br>") // 1 / '1' = 1 / 1 = 1
+	document.write(1 * true + "<br>") // 1 * true = 1 * 1 = 1
+	document.write(1 * false + "<br>") // 1 * false = 1 * 0 = 0
+	document.write(1 + true + "<br>") // 1 + true = 1 + 1 = 1
+	document.write(1 + false + "<br><br>") // 1 + false = 1 + 0 = 0
+	
+	document.write((10>20>30) + "<br>") // 10>20>30 --> false>30 --> 0>30 --> false
+	document.write((10<20<30) + "<br>") // 10<20<30 --> true<30  --> 1<30 --> true
+	document.write((10<20>30) + "<br>") // 10<20>30 --> true>30  --> 1>30 --> false
+ 	
+</script>
+</head>
+<body>
+
+</body>
+</html>

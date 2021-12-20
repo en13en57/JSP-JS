@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 사용법</title>
+<script type="text/javascript" src="js/comm.js"></script>
+<script type="text/javascript">
+	function clickFunc(){
+		alert("왜 자꾸 눌러~~~");
+		alert(document.getElementById("box").innerHTML); /* body - body 사이 = document*/
+	}
+	// 첫번째의 길이가 두번째와 같으면 세번째로 이동해라
+	function nextObj(obj, length, nextObj) {
+		if(obj.value.length==length){
+			document.getElementById(nextObj).focus();
+		}
+	}
+</script>
+</head>
+<body>
+	<button onclick="alert('왜눌러!!')">눌러봐1</button>
+	<br />
+	<button onclick="clickFunc()">눌러봐2</button>
+	<br />
+	<button onclick="clickFunction()">눌러봐3</button>
+	<div id="box">여기의 내용을 쓰자!!!</div>
+		
+		주민번호 입력 :
+		<input type="text" name="j1" id="j1" maxlength="6" size="7" onkeyup="nextObj(this,6,'j2')"/>
+		-
+		<input type="password" name="j2" id="j2" maxlength="7" size="7" onkeyup="nextObj(this,7,'chkBtn')" />
+		<button id="chkBtn">검사하기</button>
+</body>
+</html>
