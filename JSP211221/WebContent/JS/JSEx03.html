@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>undefined도 자료형이다.</title>
+<script type="text/javascript">
+	// num is no defined 에러 발생!
+	// document.writeln(num + "<br>");
+	document.writeln(typeof(num)+ "<br>");
+	// undefined의 비교
+	/*
+	if(typeof(num)==undefined){ // 에러! 
+		num=1;
+	}
+	*/
+	/*
+	if(num==undefined){ // 에러! 
+		num=2;
+	}
+	*/
+	/*
+	if(!num){ // 에러! 
+		num=3;
+	}
+	*/
+	if(typeof(num)=='undefined'){ // undefined 정의내리기 위해선 typeof를 사용해주어야함.
+		num=0;
+	}
+	document.writeln(num + "<br>");
+	num = 10;
+	document.writeln(num + "<br>");
+	num = null;	
+	document.writeln(num + "<br>");
+	document.writeln(typeof(null) + "<br>");
+
+</script>
+</head>
+<body>
+
+
+</body>
+</html>

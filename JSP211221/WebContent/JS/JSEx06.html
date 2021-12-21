@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숫자만 입력받기</title>
+<script type="text/javascript">
+	function checkNumber(event) {
+		if(event.key==="." || event.key==="-" ||  event.key>="0" && event.key<="9")
+			return true;
+		else
+			return false;
+	}
+	function checkNumber2(obj) {
+		// replace(문자열1, 문자열2) : 문자열1을 문자열 2로 변경
+		// 자바스크립트 정규식은 /정규식/g로 입력해야 한다.
+		obj.value = obj.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g, '$1');
+	}
+</script>
+</head>
+<body>
+	<!-- 1. 타입을 number로 지정하기(브라우저가 지원해야 함!) -->
+	숫자만 입력받기1 :
+	<input type="number" name="n1" id="n1" min="0" max="100"/>
+	<input type="button" value="숫자만일까?"/> <br />
+	
+	<!-- 2. 입력된 키 체크하기 -->
+	숫자만 입력받기2 :
+	<input type="text" name="n2" id="n2" onkeypress="return checkNumber(event)"/>
+	<input type="button" value="숫자만일까?"/> <br />
+	
+	<!-- 3. oninput이벤트의 정규식 사용하기 -->
+	숫자만 입력받기3 :
+	<input type="text" name="n3" id="n3" oninput="checkNumber2(this)"/>
+	<input type="button" value="숫자만일까?"/> <br />
+	
+</body>
+</html>

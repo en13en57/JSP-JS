@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Number객체를 이용한 문자열의 숫자 변환</title>
+<script type="text/javascript">
+	str1 = '1234';
+	str2 = '2002월드컵';
+	str3 = '88올림픽';
+	
+	i1 = Number(str1);
+	i2 = Number(str2);
+	i3 = Number(str3);
+	
+	document.writeln("i1 = " + i1 + "<br>");
+	// 아래 두개는 NaN을 리턴해준다.
+	// NaN : Not a Number(숫자가 아니다)
+	document.writeln("i2 = " + i2 + "<br>");
+	document.writeln("i3 = " + i3 + "<br>");
+	
+	// 숫자가 아닌것 판단
+	if(Number(str2)==NaN){ // 에러는 아닌데 true도 아니다.
+		alert('숫자 아니다.111!')
+	}
+	if(Number(str2)===NaN){ // 에러는 아닌데 true도 아니다.
+		alert('숫자 아니다.222!')
+	}
+	if(isNaN(Number(str2))){ // NaN은 판단은 isNaN()를 이용한다
+		alert('숫자 아니다.333!')
+	}
+	if(!Number(str2)){ // 이렇게 판단해도 된다.
+		alert('숫자 아니다.444!')
+	}
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

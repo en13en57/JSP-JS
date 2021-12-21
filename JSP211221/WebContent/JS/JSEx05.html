@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>주민번호 유효성 검사 하기</title>
+<script type="text/javascript">
+function nextObj(obj, length, nextObj) {
+	if(obj.value.length==length){
+		document.getElementById(nextObj).focus();
+	}
+}
+// 주민번호의 유효성을 검사하는 함수 작성
+/*
+ 1. 각각의 자리에 234567892345를 곱한 합을 구한다.
+ 2. 합을 11로 나눈 나머지를 구한다.
+ 3. 나머지를 11에서 뺀다.
+ 4. 뺀 수를 10으로 나눈 나머지를 구한다.
+ 5. 4의 결과가 13번째 자리와 같으면 맞는 주민번호이다.
+  */
+function checkJumin(){
+	var j1 = document.getElementById("j1").value;
+	if(j1.length!=6){
+		alert('주민번호 앞자리는 6자리 이어야 합니다.')
+		document.getElementById("j1").value = ''; // 지우기
+		document.getElementById("j1").focus; // 포커스 넣기
+		return;
+		
+	}
+	/*
+	isNum = true; // 모두 숫자라고 가정한다.
+	for(i in j1) { // java에서는 ; 이지만 자바 스크립트에서는 in이다. 그리고 값이 아니라 index가 넘어온다.
+		if(j1[i]<'0' || j1[i]>'9'){ // 숫자가 아니면
+			isNum = false; // 거짓을 넣고
+			break; // 빠져나간다.
+		}
+	}
+		
+	}
+	if(!isNum){ // isNum값이 false라면 숫자가 아닌 문자가 있다.
+	*/
+	}
+	if(!Number(j1)){
+	alert('주민번호 앞자리는 반드시 숫자 이어야 합니다.')
+		document.getElementById("j1").value = ''; // 지우기
+		document.getElementById("j1").focus; // 포커스 넣기
+		return;
+
+	var j2 = document.getElementById("j2").value;
+	if(j2.length!=7){
+		alert('주민번호 뒷자리는 7자리 이어야 합니다.')
+		document.getElementById("j2").value = ''; // 지우기
+		document.getElementById("j2").focus; // 포커스 넣기
+		return;
+		
+	}
+	/*
+	isNum = true; // 모두 숫자라고 가정한다.
+	for(i in j2) { // java에서는 : 이지만 자바 스크립트에서는 in이다. 그리고 값이 아니라 index가 넘어온다.
+		if(j2[i]<'0' || j2[i]>'9'){ // 숫자가 아니면
+			isNum = false; // 거짓을 넣고
+			break; // 빠져나간다.
+		}
+	}
+	if(!isNum){ // isNum값이 false라면 숫자가 아닌 문자가 있다.
+	*/
+	if(!Number(j2)){
+	alert('주민번호 앞자리는 반드시 숫자 이어야 합니다.')
+		document.getElementById("j2").value = ''; // 지우기
+		document.getElementById("j2").focus; // 포커스 넣기
+		return;
+	}
+	var jj = j1 + j2;
+	// 여기까지 내려 왔다는것은 숫자로 13자리가 입력 되었다.
+	// 유효성 검사!
+	var sum = 0;
+	for(var i=0;i<12;i++){
+		sum += jj.charAt(i) * (i%8 + 2);
+	}
+	sum = (11 - sum%11)%10;
+	if(sum==jj.charAt(12))
+		alert(j1 + " - " + j2 + "은 맞는 주민번호 입니다.");
+	else
+		alert(j1 + " - " + j2 + "은 틀린 주민번호 입니다.");
+		
+}
+</script>
+</head>
+<body>
+		주민번호 입력 :
+		<input type="text" name="j1" id="j1" maxlength="6" size="7" onkeyup="nextObj(this,6,'j2')"/>
+		-
+		<input type="password" name="j2" id="j2" maxlength="7" size="7" onkeyup="nextObj(this,7,'chkBtn')" />
+		<button id="chkBtn" onclick="checkJumin()">검사하기</button>	
+</body>
+</html>

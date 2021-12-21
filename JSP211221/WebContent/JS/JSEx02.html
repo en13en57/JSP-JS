@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 배열</title>
+<script type="text/javascript">
+	var ar1 = [];
+	var ar2 = [1,2,3,4,5];
+	var ar3 = [1,"바보",true,{},[1,2,3]];
+	
+	document.write("ar1 = " + ar1.length + "개<br>");
+	document.write("ar2 = " + ar2.length + "개<br>");
+	document.write("ar3 = " + ar3.length + "개<br><hr>");
+	
+	ar3.push("추가1");
+	ar3.push("추가2");
+	ar3.push("추가3");
+	document.write("ar3 = " + ar3.length + "개<br><hr>");
+	
+	ar3.pop(); // 제거
+	ar3.pop();
+	document.write("ar3 = " + ar3.length + "개 : " + ar3 + "<br><hr>");
+	
+	// ar3에서 2를 읽고 싶다.
+	document.writeln(ar3[4][1] + "<br>");
+	// ar3에서 "바보"를 읽고 싶다.
+	document.writeln(ar3[1] + "<br>");
+	document.writeln(ar3[1][1] + "<br>");
+	document.writeln(ar3[1].charAt(1) + "<br><hr>");
+	
+	ar4 = new Array(); // 이렇게도 배열 작성 가능 : 매개변수가 없으면 빈배열
+	document.write("ar4 = " + ar4.length + "개 : " + ar4 + "<br><hr>");
+
+	ar5 = new Array(10); // 이렇게도 배열 작성 가능 : 매개변수가 1개면 크기
+	document.write("ar5 = " + ar5.length + "개 : " + ar5 + "<br><hr>");
+
+	ar6 = new Array(1,2,3,4); // 이렇게도 배열 작성 가능 : 매개변수가 2개 이상이면 요소
+	document.write("ar6 = " + ar6.length + "개 : " + ar6 + "<br><hr>");
+	
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

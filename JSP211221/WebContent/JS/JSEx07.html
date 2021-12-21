@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>논리형의 변환</title>
+<script type="text/javascript">
+	// 0은 거짓 그외의 수는 참
+	document.write(Boolean(0) + "<br>");
+	document.write(Boolean(1) + "<br>");
+	document.write(Boolean(-1) + "<br><hr>");
+
+	document.write(Boolean(NaN) + "<br>");
+	document.write(Boolean('') + "<br>");
+	document.write(Boolean(' ') + "<br>"); // true
+	document.write(Boolean(null) + "<br>");
+	document.write(Boolean(undefined) + "<br><hr>");
+	// 부정의 부정은?
+	document.write((!!0) + "<br>");
+	document.write((!!NaN) + "<br>");
+	document.write((!!'') + "<br>");
+	document.write((!!null) + "<br>");
+	document.write((!!undefined) + "<br><hr>");
+	// == 상등 연산자를 이용하면 좌우변이 논리값으로 변경되어 연산
+	document.write((''==false) + "<br>");
+	document.write((''==0) + "<br>");
+	document.write((0==false) + "<br>");
+	document.write(('123'==123) + "<br><hr>");
+
+	document.write(('123'==123) + "<br>");
+	document.write(('123'===123) + "<br>"); // 값과 타입까지 일치하는지를 판단한다.
+	document.write(('123'!==123) + "<br><hr>");
+</script>
+</head>
+<body>
+
+</body>
+</html>
