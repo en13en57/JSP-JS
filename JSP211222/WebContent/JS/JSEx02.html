@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>반복문</title>
+<script type="text/javascript">
+	window.onload = function(){
+		sum = 0;
+		for(var i=1;i<=100;i++){
+			sum += i;
+		}
+		// 자바 같으면 에러이다! i를 사용 못함
+		// 자바 스크립트는 반복문안에서 선언한 변수는 전역변수이다.
+		document.writeln(i + " : " + sum + "<br><hr />");
+		
+		// 첫번째 for문
+		var ar = [11, 22, 33, 44, 55];
+		for(i=0;i<ar.length;i++){
+			document.writeln("ar[" + i + "] = " + ar[i] + "<br>");
+		}
+		
+		document.writeln("<hr />");
+		// 두번째 for문 : in을 사용 가능하다.
+		// 				  하지만 인덱스가 넘어온다. 자바처럼 값이 넘오오는것이 아니다.
+		for(i in ar){
+			document.writeln("ar[" + i + "] = " + ar[i] + "<br>");
+		}
+		// 객체
+		kimc = {"name" : "김종서", "age" : 34, "gender" : true};
+		// 객체의 출력
+		document.writeln(kimc.name + " : " + kimc["name"] + "<br>");
+		document.writeln("<hr />");
+
+		for(key in kimc){ // 키값이 넘어온다.
+			document.writeln("ar['" + key + "'] = " + kimc[key] + "<br>");
+		}
+	};
+</script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+</body>
+</html>

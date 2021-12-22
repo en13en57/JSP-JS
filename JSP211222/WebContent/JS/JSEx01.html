@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	
+	// window.onload : 문서가 다 불려지고 난 다음에 실행되라!
+	window.onload = function(){
+		//id가 btn인 요소를 클릭하면 다음 함수가 실행되라
+		document.getElementById("btn").onclick = function(e,a){
+			// 정의 되지 않았으면 뒤의 값을 가져라
+			e = e || window.event;
+			a = a || 0;
+			alert(e);
+			alert(a);
+			alert(Event);
+		}
+	}
+
+</script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+	<button id="btn">버튼</button>
+</body>
+</html>

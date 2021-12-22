@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트로 달력 출력하기</title>
+<script type="text/javascript">
+	today = new Date(); // 현재날짜!!!
+	year = today.getFullYear(); // 현재 연도
+	month = today.getMonth()+1; // 현재 월
+
+	window.onload = function(){
+
+		settingForm(); // select태그의 내용을 만들어 준다.
+		
+		// onchange 이벤트를 등록한다.
+		document.getElementById("yys").onchange = function(){
+			year = document.getElementById("yys").value*1;
+			month =document.getElementById("mms").value*1;
+			settingForm(); // 년월 코보 박스를 다시 정리
+			//alert(year + "년 " + month + "월");
+			setCalendar(); // 달력을 출력하자
+		}
+		document.getElementById("mms").onchange = function(){
+			year = document.getElementById("yys").value*1;
+			month =document.getElementById("mms").value*1;
+			settingForm();  // 년월 코보 박스를 다시 정리
+			//alert(year + "년 " + month + "월");
+			setCalendar();  // 달력을 출력하자
+		}
+		
+		setCalendar(); // 맨 처음에도 달력이 나온다.
+	}
+	// 달력을 출력하자
+	function setCalendar(){
+		// 1일의 요일과 마지막 날짜를 구하자!!!
+		var date = new Date(year, month -1, 1); // 날짜를 현재 선택한 달의 1일로 만든다.
+		// alert(date.getDate() + " : " + date.getDay()%7);
+		var week = date.getDay()%7; // 1일의 요일
+		var lastDay = getLastDay(year, month);
+		// 출력하자!!!
+		// 1일의 요일을 맞추기 위하여 빈칸을 출력하자
+		var innerTR = "<tr>";
+		for(i=0;i<week;i++){
+			innerTR += "<td>&nbsp;</td>";
+		}
+		// 1일부터 마지막 날짜까지 날짜를 출력한다. 출력한 날짜의 요일이 토요일이면 줄바꿈 한다.
+		for(i=1;i<=lastDay;i++){
+			var date = new Date(year, month -1, i);
+			var week = date.getDay()%7; // 1일의 요일
+			innerTR += "<td>" + i + "</td>";
+			console.log(i + " : " + week);
+			if(week==6){ //토요일이면
+				// alert(i + " : " + week);
+				innerTR += "</tr>";
+				if(i<lastDay){ 
+					// 마지막 날짜가 아니라면 새로운 줄 시작
+					innerTR += "<tr>";
+				}
+			}
+		}
+		// 표의 마지막을 마무리해야 한다.
+		if(week<6){ // 마지막 출력한 날짜가 토요일이 아니면
+			for(i=week+1;i<=6;i++){ // 나머지를 출력한다.
+				innerTR += "<td>&nbsp;</td>";
+			}	
+			innerTR += "</tr>";
+		}
+		document.getElementById("viewBox").innerHTML = innerTR;
+	}
+	// 해당 년월의 마지막 날짜를 구해주는 함수
+	function getLastDay(yy, mm){
+		var m = [31,28,31,30,31,30,31,31,30,31,30,31];
+		m[1] = (yy%400==0 || yy%4==0 && yy%100!=0) ? 29 : 28;
+		return m[mm-1];
+	}
+	// select태그의 년도와 월의 내용을 바꿔준다.
+	function settingForm(){
+		// 넣을 내용을 문자열로 만들기
+		var innerYY = "";
+		for(i=year-10;i<=year+10;i++){ // 현재년도의 이전 10년과 이후 10년까지
+			innerYY += "<option value='" + i 
+					   + "'" + ((i==year) ? " selected='selected' " : "") // 현재년도 선택	
+					   + ">" + i + "</option>\n";
+		}
+		var innerMM = "";
+		for(i=1;i<=12;i++){
+			innerMM += "<option value='" + i 
+			 		+ "'" + ((i==month) ? " selected='selected' " : "")	// 현재월 선택
+					+ ">" + i + "</option>\n";
+		}
+		// 문자열을 넣기
+		document.getElementById("yys").innerHTML = innerYY;
+		document.getElementById("mms").innerHTML = innerMM;
+	}
+</script>
+<style type="text/css">
+	table{width:210px;margin: auto;}
+	th{background-color: skyblue; border: 1px solid blue;padding:5px;}
+	td {text-align: center;}
+</style>
+</head>
+<body>
+	<table border="1">
+		<tr>
+			<td colspan="7" align="center">
+				<select id="yys">
+				
+				</select>년
+				<select id="mms">
+				
+				</select>월
+			</td>
+		</tr>
+		<tr>
+			<th>일</th>
+			<th>월</th>
+			<th>화</th>
+			<th>수</th>
+			<th>목</th>
+			<th>금</th>
+			<th>토</th>
+		</tr>
+		<tbody id="viewBox"></tbody>
+	</table>
+</body>
+</html>
