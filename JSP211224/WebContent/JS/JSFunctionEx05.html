@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>함수 연습</title>
+<script type="text/javascript">
+	// Array함수
+	var ar1 = Array(); // 빈배열 만들기
+	var ar2 = Array(10); // 10개 배열 만들기. 인수가 1개면 크기이다. 
+	var ar3 = Array(1,2,3,4,5); // 배열 초기화 후 데이터 대입. 인수가 2개 이상이면 배열 초기값
+	
+	document.writeln(ar1.length + " : " + ar1 + "<br>");
+	document.writeln(ar2.length + " : " + ar2 + "<br>");
+	document.writeln(ar3.length + " : " + ar3 + "<br><hr>");
+	
+	// 나도 Array같은 함수를 만들 수 있을까?
+	function MyArray(){
+		if(arguments.length==0){ // 인수가 없으면 빈배열 리턴
+			return [];
+		} else if(arguments.length==1){ // 인수가 1개면 개수만큼 배열을 만들어 리턴
+			var ar = [];
+			for(var i=0;i<arguments[0];i++) ar.push(null);
+			return ar;
+		}else{ // 2개 이상이면 데이터 개수 만큼 배열을 만들어 값을 대입하여 리턴
+			var ar = [];
+			for(var i=0;i<arguments.length;i++) ar.push(arguments[i]);
+			return ar;
+		}
+	}
+	
+	var ar1 = MyArray(); // 빈배열 만들기
+	var ar2 = MyArray(10); // 10개 배열 만들기. 인수가 1개면 크기이다. 
+	var ar3 = MyArray(1,2,3,4,5); // 배열 초기화 후 데이터 대입. 인수가 2개 이상이면 배열 초기값
+	
+	document.writeln(ar1.length + " : " + ar1 + "<br>");
+	document.writeln(ar2.length + " : " + ar2 + "<br>");
+	document.writeln(ar3.length + " : " + ar3 + "<br><hr>");
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

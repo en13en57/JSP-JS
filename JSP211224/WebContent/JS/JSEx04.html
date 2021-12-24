@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>1~100사이의 소수 구하기</title>
+<script type="text/javascript">
+	function getPrimeNumber1(limit){
+		// 제일 멍청한 방법 : 약수의 개수가 2개면 소수이다.
+		var result = "";
+		var cnt = 0;
+		for(var i=2;i<=limit;i++){ // 2 ~ limit까지
+			var count = 0;
+			for(var j=1;j<=i;j++){ // 1 ~  i까지
+				if(i%j==0) count++; // 약수의 개수 구하기
+			}
+			if(count==2){ // 약수의 개수가 2개면 소수
+				result += i + " ";
+				if(++cnt%5==0) result += "<br>"; // 출력개수 5개씩 줄바꿈
+			}
+		}
+		document.getElementById("result1").innerHTML = result;
+	}
+	function getPrimeNumber2(limit){
+		// 조금 멍청한 방법 : 나누어져 떨어질때(나머지가 0) 나누는 수가 자신이라면 소수
+		var result = "";
+		var cnt = 0;
+		for(var i=2;i<=limit;i++){ // 2 ~ limit까지
+			
+			var j=1;
+			do{ // 나누어 떨어질때까지 반복
+				++j;
+			}while(i%j!=0);
+			
+			if(i==j){ // 나누는 수가 자신이라면 소수 : 중간에 약수가 없다!!!
+				result += i + " ";
+				if(++cnt%5==0) result += "<br>"; // 출력개수 5개씩 줄바꿈
+			}
+		}
+		document.getElementById("result2").innerHTML = result;
+	}
+	
+	function getPrimeNumber3(limit){
+		// 조금 현명한 방법 : 그수의 절반을 넘는 수로는 절대 나누어 떨어질 수 없다.
+		var result = "";
+		var cnt = 0;
+		for(var i=2;i<=limit;i++){ // 2 ~ limit까지
+			flag = true; // 일단 소수라고 가정
+			// for(var j=2;j<= i/2;j++){ // 1 ~  i/2 까지
+			for(var j=2;j<= Math.sqrt(i);j++){ // 1 ~  i/2 까지
+				if(i%j==0){
+					flag = false;
+					break;
+				}
+			}
+			
+			if(flag){ // 나누어 떨어지는 수가 없다면(약수가 없다) 소수다.
+				result += i + " ";
+				if(++cnt%5==0) result += "<br>"; // 출력개수 5개씩 줄바꿈
+			}
+		}
+		document.getElementById("result3").innerHTML = result;
+	}
+	// 소수 구하기 (에라토스테네스의 체)
+	function getPrimeNumber4(limit){
+		// 현명한 방법 : 그수의 절반을 넘는 수로는 절대 나누어 떨어질 수 없다.
+		var result = "";
+		// 만일 n이 1보다 작거나 같으면 함수 종료
+		// if(limit<=1) return result;
+		
+		// 1. 숫자 범위만큼 배열을 만들어 모두 참값으로 초기화 =>일단 모두 소수라고 가정하자!!
+		var ar = [];
+		for(var i=0;i<=limit;i++) ar.push(true);
+		
+		// 2. 자신을 제외한 배수들을 모두 소수가 아니다. 
+		for (var i = 2; i * i <= limit; i++){
+			if (ar[i]){ // true라면 기존 수 의 배수가 아니라면 
+				for (var j = i * i; j <= limit; j += i){ // 자신을 제외한 배수들에게
+				    ar[j] = false; // 소수가 아니라고 표시한다.
+				}
+			}
+		}
+		// 여기까지 돌면 배수들은 모두 false가 들어가 있다.
+		var cnt = 0;
+		for(var i=2;i<=limit;i++) {
+			if(ar[i]){
+				result += i + " ";
+				if(++cnt%5==0) result += "<br>"; // 출력개수 5개씩 줄바꿈
+			}
+		}
+		document.getElementById("result4").innerHTML = result;
+	}
+	
+	window.onload = function(){
+		getPrimeNumber1(100);
+		getPrimeNumber2(100);
+		getPrimeNumber3(100);
+		getPrimeNumber4(100);
+	}
+</script>
+<style type="text/css">
+	#result1, #result2, #result3, #result4 {
+		border: 1px solid gray; margin: 10px; padding: 10px; width: 300px;
+	}
+</style>
+</head>
+<body>
+	<div id="result1"></div>
+	<div id="result2"></div>
+	<div id="result3"></div>
+	<div id="result4"></div>
+</body>
+</html>

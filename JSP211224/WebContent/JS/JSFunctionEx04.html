@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>함수 연습</title>
+<script type="text/javascript">
+	// 가변인수
+	function sum(){
+		// 모든 자바스크립트 함수는 arguments라는 숨겨진 변수가 존재합니다.
+		// arguments 모든 인수를 배열로 받아 줍니다.
+		var s = 0;
+		for(i in arguments){
+			s += arguments[i];
+		}
+		return s;
+	}
+	
+	document.writeln(sum(1,4) + "<br>")
+	document.writeln(sum(1,4,5) + "<br>")
+	document.writeln(sum(1,4,6,7) + "<br>")
+	document.writeln(sum(1,4,6,7,8) + "<br>")
+</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function solution(absolutes, signs){
+		var answer = 0;
+		for(var i=0;i<absolutes.length;i++){
+			answer += absolutes[i] * (signs[i] ? 1 : -1);
+		}
+		return answer;
+	}
+
+	document.writeln(solution([4,7,12], [true,false,true]));
+	document.writeln(solution([1,2,3], [false,false,true]));
+</script>
+</head>
+<body>
+
+</body>
+</html>
