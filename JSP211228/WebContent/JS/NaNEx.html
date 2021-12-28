@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function check(){
+		var value = document.getElementById("age").value;
+		// 값이 숫자만인지 검사하고 싶다.
+		flag = true;
+		for(i=0;i<value.length;i++){
+			if(value.charAt(i)<'0' || value.charAt(i)>'9'){
+				flag = false;
+				break;
+			}
+		}
+		if(flag){
+			alert('숫자만으로 구성됨');
+		}else{
+			alert('숫자가 아닌 문자도 있음');
+		}
+		// 이렇게도 가능
+		// NaN : Not a Number
+		// NaN의 비교는 반드시 isNaN함수를 사용해야 한다.
+		if(!isNaN(value)){
+			alert('숫자만으로 구성됨');
+		}else{
+			alert('숫자가 아닌 문자도 있음');
+		}
+		alert(Number(value));
+		
+		if(Number(value)!=NaN){ // 이런 조건식은 참으로 해석
+			alert('숫자만으로 구성됨');
+		}else{
+			alert('숫자가 아닌 문자도 있음');
+		}
+	}
+	
+	
+</script>
+</head>
+<body>
+	<input type="text" id="age"/> 
+	<input type="button" onclick="check()" value="검사"/>
+	<br /> <hr />
+	<script type="text/javascript">
+		// 이것이 에러가 아니라 Infinity(무한대)를 출력
+		document.writeln(10/0 + "<br>");
+		document.writeln(isFinite(10/0) + "<br>");
+		document.writeln(!isFinite(10/0) + "<br><hr>");
+		document.writeln(isFinite(-1) + "<br>");
+		document.writeln(isFinite(0) + "<br>");
+		document.writeln(isFinite(1) + "<br><hr>");
+		
+		var str = "123.567";
+		document.writeln(typeof(str) + " : " + parseInt(str) + "<br>");
+		document.writeln(typeof(str) + " : " + parseFloat(str) + "<br><hr>");
+		
+		var str = "111";
+		
+		// 2진수로 해석해서 10진 정수로 만들어라
+		document.writeln(typeof(str) + " : " + parseInt(str, 2) + "<br>");
+		document.writeln(typeof(str) + " : " + parseInt(str, 8) + "<br>");
+		document.writeln(typeof(str) + " : " + parseInt(str, 16) + "<br><hr>");
+	
+		document.writeln((10/0) + "<br>");
+		document.writeln((10/'a') + "<br>");
+		document.writeln((10 * 'a') + "<br>"); // 자바처럼 스스로 형변환 않됨
+		document.writeln((10/'2') + "<br>");
+		document.writeln((10*'2') + "<br>");
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>문자열 인코딩/디코딩</title>
+<script type="text/javascript">
+	name = "한 사 람";
+	window.document.writeln( "name = " + name + "<br>");
+	document.writeln( "name = " + window.escape(name) + "<br>");
+	document.writeln( "name = " + window.encodeURI(name) + "<br>");
+	document.writeln( "name = " + encodeURIComponent(name) + "<br><hr>");
+	
+	document.writeln( "name = " + unescape(escape(name)) + "<br>");
+	document.writeln( "name = " + decodeURI(encodeURI(name)) + "<br>");
+	document.writeln( "name = " + decodeURIComponent(encodeURIComponent(name)) + "<br><hr>");
+	
+	// IE에서는 한글/공백/특수문자들은 반드시 인코딩해서 넘겨야 한다.
+	
+	document.writeln("<a href='?name=한사람'>눌러줘1<a><br>");
+	document.writeln("<a href='?name=" + encodeURIComponent("한사람") + "'>눌러줘2<a><br>");
+	
+// https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%EA%BD%83
+</script>
+</head>
+<body>
+	
+</body>
+</html>

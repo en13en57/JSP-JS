@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>closure란?</title>
+<script type="text/javascript">
+	
+	function outerFunc(){
+		var x = 10;
+		// 내부 함수
+		var innerFunc = function(){
+			document.writeln(x + "<br>"); // 상위 함수의 변수를 자유자재로 사용가능하다.
+		}
+		innerFunc();
+	}
+	outerFunc();
+	
+	function outerFunc2(){
+		var x = 10;
+		// 함수를 리턴
+		return function(){
+			document.writeln(x + "<br>"); // 상위 함수의 변수를 자유자재로 사용가능하다.
+		};
+	}
+	
+	outerFunc2()(); // 함수를 리턴하므로 리턴된 함수를 실행하기 위해서 ()를 붙인다.
+	
+	// 위의 1줄을 다음처럼 2줄로 표현이 가능하다.
+    var fn = outerFunc2();
+	fn();
+	
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>함수를 리턴하는 함수</title>
+<script type="text/javascript">
+	function increase(){
+		var count = 0;
+		// 함수를 리턴한다.
+		return function(){
+			return ++count;
+		}
+	}
+	
+	var one = increase();
+	var two = increase();
+	var three = increase();
+	
+	document.writeln(one());
+	document.writeln(two());
+	document.writeln(three());
+	document.writeln(increase()());
+</script>
+</head>
+<body>
+
+</body>
+</html>

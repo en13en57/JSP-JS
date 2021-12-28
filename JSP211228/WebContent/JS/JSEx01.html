@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>클로저(closure)의 개념</title>
+</head>
+<body>
+	<h1>각각의 DIV를 클릭하면 DIV0, DIV1, DIV2처럼 이름을 출력하고 싶다!!!</h1>
+	<hr />
+	
+	<div id="div0">Click me! DIV 0</div>
+	<div id="div1">Click me! DIV 1</div>
+	<div id="div2">Click me! DIV 2</div>
+	<script> 
+	var i, len = 3; 
+	for (i = 0; i < len; i++) { //#1 
+		document.getElementById("div" + i).addEventListener("click", function () { //#2 
+			alert("You clicked div #" + i); // i는 호출 시점에 i값을 나타낸다.
+			}, false); 
+	} 
+	// 여기서 i값이 3이므로 모두  "You clicked div #3"을 출력한다.
+	</script>
+</body>
+</html>

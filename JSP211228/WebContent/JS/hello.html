@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>인사하기 클로저</title>
+<script type="text/javascript">
+	var name = "김말동"
+	function hello(){
+		return name + "씨 안녕!!!";
+	}
+
+	alert(hello());
+	name = "최말동";
+	alert(hello());
+	name = "박말동";
+	alert(hello());
+
+	alert(hello());
+	alert(hello());
+	
+	function hello2(name){
+		var msg = name + "씨 안녕!!!";
+		return function(){
+			alert(msg);
+		};
+	}
+	// 하나의 함수가 실행 되었는데 
+	// 각각의 변수는 다른 값을 가지게 한다.
+	kimc = hello2("김사람");
+	leec = hello2("이사람");
+	parkc = hello2("박사람");
+	
+	kimc();
+	leec();
+	parkc();
+	
+	kimc();
+	parkc();
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

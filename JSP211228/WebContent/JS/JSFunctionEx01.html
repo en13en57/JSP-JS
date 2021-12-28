@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>함수를 매개변수(인수, Parameter)로 받는 함수</title>
+<script type="text/javascript">
+	function callTenTimes(fn){
+		for(i=0;i<10;i++) fn(); // 인수로 받은 함수를 10번 실행해준다.
+	}
+	function fn(){
+		document.write("바보!");
+	}
+	
+	callTenTimes(fn); // 함수 이름을 인수로 넘겨서 함수를 10번 호출한다.
+	
+	document.write("<br>");
+
+	callTenTimes(function() { // 익명함수를 인수로 넘겨서 함수를 10번 호출한다.
+		document.write("천재!");
+	});
+</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>eval()함수</title>
+</head>
+<body>
+	<h1 id="box">eval(string) : 문자로 표현 된 JavaScript 코드를 실행하는 함수</h1>
+	<button id="btn1">눌러봐1</button>
+	<button id="btn2">눌러봐2</button>
+	<button id="btn3">눌러봐3</button>
+	<button id="btn4">눌러봐4</button>
+	<button id="btn5">눌러봐5</button> <br /><hr />
+	<script type="text/javascript">
+		var str = "2+3";
+		
+		document.writeln(str + "<br>");			// 2+3
+		document.writeln(eval(str) + "<br>");	// 5
+	
+		document.writeln((eval(str)==new String(str)) + "<br>");
+		document.writeln((eval(str)===new String(str)) + "<br>");
+		// eval() is evil
+		document.writeln((eval(str)===eval('5')) + "<br>");
+		document.writeln((eval(str)===eval(new String(str))) + "<br>");
+		id = "box";
+		str = "document.getElementById('" + id  + "').onclick = function(){alert('꽝');}";
+		document.writeln(str + "<br>");
+		document.writeln(typeof(str) + "<br>");
+		eval(str);
+		
+		for(var i=1;i<=5;i++){
+			str = "document.getElementById('btn" + i  + "').onclick = function(){alert(this.innerHTML);}";
+			eval(str);
+		}
+		
+	</script>
+</body>
+</html>
