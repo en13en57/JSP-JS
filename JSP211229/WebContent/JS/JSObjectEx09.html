@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체지향 프로그램</title>
+<script type="text/javascript">
+	// new를 사용하여 객체를 만들었을때와 new를 사용하지 않고 객체를 만들었을때의 차이점을 보자!
+	function Some(value){
+		this.value = value;
+	}
+	// new를 붙여서 사용
+	var some1 = new Some("한사람");
+	var some2 = new Some("두사람");
+	
+	document.writeln(some1.value + "<br>");
+	document.writeln(some2.value + "<br><hr>");
+	
+	// new를 사용하지 않고 사용
+	// some3, some4에는 아무런 값도 대입되지않는다.
+	// window에 생성됨
+	var some3 = Some("세사람");
+	var some4 = Some("네사람");
+	// 내용이 출력되지 않는다. error !!!
+	// why? new를 사용하지 않으면 this.value에서
+	// this는 윈도우 영역이 되어 버린다.
+	// document.writeln(some3.value + "<br>");
+	// document.writeln(some4.value + "<br><hr>");
+	// 그럼 어떻게 출려해야할까?
+	document.writeln(value + "<br><hr>");
+	document.writeln(window.value + "<br><hr>");
+	document.writeln(some3 + "<br>");
+	document.writeln(some4 + "<br><hr>");
+	
+	// 결론은 객체마다 다른 값을 저장하여 사용하려면
+	// 반드시 객체생성시 new를 붙여주어야 한다.
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

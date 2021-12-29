@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체지향 프로그램</title>
+<script type="text/javascript">
+	var ar = ['사과','배','감','밤','대추'];
+	document.write(typeof(ar) + " : " + ar + "<br>");
+	var obj = {
+			"제품명":"7D 건조망고",
+			"유형":"당절임",
+			"성분":"망고,설탕,메타중아황산나트륨,치자황색소",
+			"원산지":"필리핀"
+			
+	}
+	document.write(typeof(obj) + " : " + obj + "<br><hr>");
+	
+	for(idx in ar){
+		document.write("ar["+idx+"] = " + ar[idx] + "<br>");
+	}	
+	document.write("<hr>");	
+	
+	for(key in obj){
+		document.write("obj['"+key+"'] = " + obj[key]+ "<br>");
+		document.write("obj."+key+" = " + obj.key + "<br>");
+		
+	}
+	document.write("<hr>");
+	
+	var obj2 = {
+			"with" : 111,
+		"with space" : 345,
+		"with-space" : 678
+	}
+	// json 의 자바로 나타내기위함
+	// []나 .을 사용하여 멤버에 접근가능하다. 하지만 공백이나 -등 있으면
+	// 반드시 []를 써야한다.
+	document.write(typeof(obj2) + " : " + obj2 + "<br><hr>");
+	document.write(obj2['with space'] + "<br>");
+	// document.write(obj2.with space + "<br>");
+	document.write(obj2['with-space'] + "<br>");
+	// space is not defines 왜? -를 연산자로 인식한다.
+	// document.write(obj2.with-space + "<br>");
+	space = 8;
+	document.write(obj2.with-space + "<br>");
+		
+</script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+</body>
+</html>

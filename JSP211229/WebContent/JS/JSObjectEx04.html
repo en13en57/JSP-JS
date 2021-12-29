@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체지향 프로그램</title>
+<script type="text/javascript">
+	var name = "박문수"; // window영역에 변수 선언
+	var stu = {
+			name : "한사람", kor : 90, mat : 87, eng : 78, edps : 100, // 객체 내의 변수 선언
+			output : "이미 있지롱",
+			// 객체 내의 메서드 선언
+			getTotal : function(){
+				return this.kor + this.eng + this.mat + this.edps;
+			},
+			getAvg : function(){
+				return this.getTotal()/4;
+			},
+			toString : function(){
+				return "이름 : " + this.name // 여기에서 this를 붙이지 않으면  window영역의 name을 가져온다.
+				       + "<br>국어 : " + this.kor 
+				       + "<br>영어 : " + this.eng 
+				       + "<br>수학 : " + this.mat
+				       + "<br>전산 : " + this.edps
+				       + "<br>총점 : " + this.getTotal()
+				       + "<br>평균 : " + this.getAvg();
+			}
+	}
+	document.writeln(stu + "<br><hr>");
+	
+	// 객체를 배열로 사용이 가능하다.
+	var student = [];
+	student.push(stu);
+
+	for(i=0;i<9;i++){
+		// 자바스크립트는 배열에 내용을 동적으로 추가가 가능하다. 
+		// push()메서드를 사용한다.
+		// 자바로 따지면 배열이 아니라 리스트에 가깝다.
+		student.push({name:"사람"+(i+1), 
+					  kor : parseInt(Math.random()*101),
+					  eng : parseInt(Math.random()*101),
+					  mat : parseInt(Math.random()*101),
+					  edps : parseInt(Math.random()*101),
+					  getTotal : function(){
+							return this.kor + this.eng + this.mat + this.edps;
+					  },
+					  getAvg : function(){
+							return this.getTotal()/4;
+					  },
+					  toString : function(){
+							return "이름 : " + this.name // 여기에서 this를 붙이지 않으면  window영역의 name을 가져온다.
+							       + "<br>국어 : " + this.kor 
+							       + "<br>영어 : " + this.eng 
+							       + "<br>수학 : " + this.mat
+							       + "<br>전산 : " + this.edps
+							       + "<br>총점 : " + this.getTotal()
+							       + "<br>평균 : " + this.getAvg();
+						}
+					  
+					  });
+	}
+	document.writeln(student.length + "명의 학생이 있다!!!<br><hr>");
+	
+	// 학생의 내용을 모두 찍어보자
+	for(i=0;i<student.length;i++){
+		/*
+		with(student[i]){
+			var result2 = "이름 : " + name // 여기에서 this는 window객체가 된다.
+		    + "<br>국어 : " + kor 
+		    + "<br>영어 : " + eng 
+		    + "<br>수학 : " + mat
+		    + "<br>전산 : " + edps
+		    + "<br>총점 : " + (kor+eng+mat+edps)
+		    + "<br>평균 : " + ((kor+eng+mat+edps)/4);
+			document.writeln(result2 + "<br><hr>");
+		}
+		*/
+		// 메서드도 추가했다면 출력은 아래와 같이 간단해진다.
+		document.writeln(student[i] + "<br><hr>");
+	}
+
+	// 석차를 구해서 이름, 총점, 평균, 석차를 출력해보시오
+	// 1. rank라는 속성을 추가해서 1로 초기화 한다. 출력하는 메서드 추가
+	for(i=0;i<student.length-1;i++){
+		student[i].rank=1;
+		student[i].showRank = function(){
+			return this.name + ", " + this.getTotal() + ", " 
+			       + this.getAvg() + ", " + this.rank + "위";
+		}
+	}
+	// 2.석차를 구한다.
+	for(i=0;i<student.length-1;i++){
+		for(j=i+1;j<student.length;j++){
+			if(student[i].getTotal()>student[j].getTotal()){
+				student[j].rank++;
+			}else if(student[i].getTotal()<student[j].getTotal()){
+				student[i].rank++;
+			}			
+		}
+	}
+	// 3. 출력
+	for(i=0;i<student.length-1;i++){
+		document.writeln( i + ". " + student[i].showRank() + "<br><hr>");
+	}
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

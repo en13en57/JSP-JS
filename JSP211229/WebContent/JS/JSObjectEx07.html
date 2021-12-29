@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체지향 프로그램</title>
+<script type="text/javascript">
+	// 이름, 나이, 성별을 저장하는 Person클래스를 만들어 보자.
+	// 1.생성자 함수를 만든다.
+	function Person(name, age, gender){
+		this.name = name;
+		this.age = age;
+		this.gender = gender;
+	}
+	// 2.메서드를 프로토타입에 만든다.
+	Person.prototype.toString = function(){
+		return this.name + "(" + this.age + "세," + (this.gender?"남자":"여자") + " )";
+	}
+	// 3. 이제 사용만 하면 된다.
+	var kimc = new Person("김종서", 44, true);
+	var shinc = new Person("신사임당", 52, false);
+	
+	document.writeln(kimc + "<br>");
+	document.writeln(shinc + "<br>");
+	
+	// 아직 정보의 은폐는 이루어지지 않았다. 모든 멤버가 전역이되어 누구나 접근 가능하다
+	shinc.age = 18;
+	document.writeln(shinc + "<br>");
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

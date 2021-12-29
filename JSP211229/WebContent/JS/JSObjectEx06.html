@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체지향 프로그램</title>
+<script type="text/javascript">
+	// 자바처럼 객체를 만들때 new Student()이런식으로는 만들 수 없을까?
+	// 생성자 함수를 만들어 주면 자바처럼 사용이 가능하다...
+	function Student(name, kor, eng, mat, edps){
+		// this를 붙여서 변수를 선언한다.
+		this.name = name, 
+		this.kor = kor, 
+		this.mat = mat, 
+		this.eng = eng, 
+		this.edps = edps, // 객체 내의 변수 선언
+		// 객체 내의 메서드 선언
+		this.getTotal = function(){
+			return this.kor + this.eng + this.mat + this.edps;
+		},
+		this.getAvg = function(){
+			return this.getTotal()/4;
+		},
+		this.toString = function(){
+			return "이름 : " + this.name // 여기에서 this를 붙이지 않으면  window영역의 name을 가져온다.
+			       + "<br>국어 : " + this.kor 
+			       + "<br>영어 : " + this.eng 
+			       + "<br>수학 : " + this.mat
+			       + "<br>전산 : " + this.edps
+			       + "<br>총점 : " + this.getTotal()
+			       + "<br>평균 : " + this.getAvg();
+		}
+			
+	}	
+	stu1 = new Student("한사람",45,36,78,95);
+	document.writeln(stu1 + "<br><hr>");
+	var names = "한놈,두식이,석삼,너구리,오징어,육개장,칠면조,팔불출,구공탄,십장생".split(",");
+	var students = [];
+	for(i=0;i<10;i++){
+		students.push(new Student(names[i],
+				parseInt(Math.random()*101),
+				parseInt(Math.random()*101),
+				parseInt(Math.random()*101),
+				parseInt(Math.random()*101)));
+	}
+	document.writeln(students.length + "명의 학생<br><hr>");
+	for(i=0;i<10;i++){
+		document.writeln(students[i] + "<hr>");
+	}
+</script>
+</head>
+<body>
+
+</body>
+</html>

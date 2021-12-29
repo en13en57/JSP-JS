@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>JSP211229</display-name>
+  <!-- web.xml은 웹애플리케이션의 설정 정보를 저장하는 파일로서 웹프로그램이 실행될때 읽어서 기본 세팅 -->
+  <!-- 초기화 파라메터를 웹애플리케이션에 전달할 수 있다. -->
+  <!-- 애플리케이션 객체를 사용하여 불러들인다. -->
+  <context-param>
+  	<param-name>dbUser</param-name> <!-- 변수명 -->
+  	<param-value>root</param-value> <!-- 값 -->
+  </context-param>
+  <context-param>
+  	<param-name>dbPassword</param-name> <!-- 변수명 -->
+  	<param-value>123456</param-value> <!-- 값 -->
+  </context-param>
+  <context-param>
+  	<param-name>db</param-name> <!-- 변수명 -->
+  	<param-value>mariaDB</param-value> <!-- 값 -->
+  </context-param>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

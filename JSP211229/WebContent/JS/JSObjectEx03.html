@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체지향 프로그램</title>
+<script type="text/javascript">
+	var name = "박문수"; // window영역에 변수 선언
+	var stu = {
+			name : "한사람", kor : 90, mat : 87, eng : 78, edps : 100, // 객체 내의 변수 선언
+			output : "이미 있지롱",
+			// 객체 내의 메서드 선언
+			getTotal : function(){
+				return this.kor + this.eng + this.mat + this.edps;
+			},
+			getAvg : function(){
+				return this.getTotal()/4;
+			},
+			toString : function(){
+				return "이름 : " + this.name // 여기에서 this를 붙이지 않으면  window영역의 name을 가져온다.
+				       + "<br>국어 : " + this.kor 
+				       + "<br>영어 : " + this.eng 
+				       + "<br>수학 : " + this.mat
+				       + "<br>전산 : " + this.edps
+				       + "<br>총점 : " + this.getTotal()
+				       + "<br>평균 : " + this.getAvg();
+			}
+	}
+	document.writeln(stu + "<br><hr>");
+	// 밖에서 사용할때는 this가 아니라 "객체명.속성" 이어야 한다. 
+	var result = "이름 : " + stu.name // 여기에서 this는 window객체가 된다.
+    + "<br>국어 : " + stu.kor 
+    + "<br>영어 : " + stu.eng 
+    + "<br>수학 : " + stu.mat
+    + "<br>전산 : " + stu.edps
+    + "<br>총점 : " + stu.getTotal()
+    + "<br>평균 : " + stu.getAvg();
+	document.writeln(result + "<br><hr>");
+
+	// with 절!!!! : ()안의 객체 이름을 생략해도 된다.
+	with(stu){
+		var result2 = "이름 : " + name // 여기에서 this는 window객체가 된다.
+	    + "<br>국어 : " + kor 
+	    + "<br>영어 : " + eng 
+	    + "<br>수학 : " + mat
+	    + "<br>전산 : " + edps
+	    + "<br>총점 : " + getTotal()
+	    + "<br>평균 : " + getAvg();
+		document.writeln(result2 + "<br><hr>");
+	}
+	// with절 내에서 만든 변수를 밖에서 사용 가능할까? 
+	document.writeln(result2 + "<br><hr>");
+	
+	// 전역변수 output과 지역변수 output이 충돌이 나면 어떤 놈이 출력 될까요? 
+	/*
+	var output="";
+	with(stu){
+		output = "이름 : " + name // 여기에서 this는 window객체가 된다.
+	    + "<br>국어 : " + kor 
+	    + "<br>영어 : " + eng 
+	    + "<br>수학 : " + mat
+	    + "<br>전산 : " + edps
+	    + "<br>총점 : " + getTotal()
+	    + "<br>평균 : " + getAvg();
+	}
+	document.writeln(output + "<br><hr>"); // 아무것도 출력되지 않는다. 왜? with절 내에서는 지역변수 사용됨
+	document.writeln(stu.output + "<br><hr>"); // 모두 출력이된다.
+	*/
+	// 나는 전역변수에 넣고 싶었다. 그럼 어떻게 해야할까?
+	var output="";
+	with(stu){
+		window.output = "이름 : " + name // window.output 은 전역 변수에 넣어라
+	    + "<br>국어 : " + kor 
+	    + "<br>영어 : " + eng 
+	    + "<br>수학 : " + mat
+	    + "<br>전산 : " + edps
+	    + "<br>총점 : " + getTotal()
+	    + "<br>평균 : " + getAvg();
+	}
+	document.writeln(output + "<br><hr>"); // 모두 출력이된다.
+	document.writeln(stu.output + "<br><hr>"); // 지역변수값 "이미 있지롱"이 출력
+		
+</script>
+</head>
+<body>
+
+</body>
+</html>

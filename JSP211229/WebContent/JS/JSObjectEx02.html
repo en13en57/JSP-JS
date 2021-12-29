@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체지향 프로그램</title>
+<script type="text/javascript">
+	var obj = {
+			"제품명":"7D 건조망고",
+			"유형":"당절임",
+			"성분":"망고,설탕,메타중아황산나트륨,치자황색소",
+			"원산지":"필리핀",
+			"toString" : function(){ // 메서드 등록
+				return this.제품명 + "(" + this.유형 + ")"
+				//     this를 붙여주지않으면 전역변수에서 찾음
+			}				
+
+	
+	}
+	
+	for(key in obj){
+		document.write("obj.['"+key+"'] = " + obj[key] + "<br>");
+		
+	}
+	document.write("<hr>");
+	
+	// 이렇게 객체를 출력하면 원래는[object,object]로 출력되지만
+	// toString 메서드를 만들어 주면 자동으로 toString메서드를 호출해서 보여준다.
+	document.write(obj + "<br>"); 
+	document.write("<hr>");
+	
+	document.write(obj.toString() + "<br>");
+	
+	// 변수의 동적 추가
+	obj.price = 20000;
+	// 메서드의 동적 추가
+	obj.view = function(){
+		return this.제품명 + "(" + this.price + "원)";
+	}
+		
+	document.write(obj.view() + "<br>"); 
+	document.write("<hr>");
+	
+	obj.eat = function(name){
+		return name + "씨가" + this.제품명 +"을 맛나게 먹네요";
+	}
+
+	document.write(obj.eat("박문수") + "<br>"); 
+	document.write(obj.eat("홍길동") + "<br>"); 
+	document.write("<hr>");
+	
+	// 값의 수정
+	obj.price = 15670;
+	document.write(obj.view() + "<br>"); 
+	document.write("<hr>");
+	
+	// 다시 모든 변수와 메서드를 출력해보자
+	for(key in obj){
+		document.write("obj.['"+key+"'] = " + obj[key] + "<br>");
+		
+	}
+	document.write("<hr>");
+	
+	// 삭제도 해보자
+	delete obj.성분;
+	for(key in obj){
+		document.write("obj.['"+key+"'] = " + obj[key] + "<br>");
+		
+	}
+	document.write("<hr>");
+	
+	// in 연산자 : 값 in 객체 ==> 지정 객체에 지정 속성이 있는지를 검사한다.
+	if("name" in obj){
+		document.writeln("이름있다");
+	}else{
+		document.writeln("이름없다");
+		
+	}
+	
+</script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+</body>
+</html>
