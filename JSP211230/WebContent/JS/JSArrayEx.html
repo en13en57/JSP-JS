@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 배열 다루기</title>
+<script type="text/javascript">
+	var ar = [];
+	// 배열.join(구분자) : 배열요소를 구분자로 구분하여 문자열을 리턴한다.
+	document.writeln(ar.length + "개 : " + ar.join("-") + "<br>");
+	
+	// 배열에 요소 추가
+	for(i=0;i<10;i++) ar.push(parseInt(Math.random()*1000));
+	
+	document.writeln(ar.length + "개 : " + ar.join(", ") + "<br>");
+	
+	// 배열 요소 제거하기
+	ar.pop(); // 뒤에것 제거
+	ar.pop();
+	ar.pop();
+	
+	document.writeln(ar.length + "개 : " + ar.join(", ") + "<br>");
+	
+	// 배열 뒤집기
+	ar.reverse();
+	document.writeln(ar.length + "개 : " + ar.join(", ") + "<br>");
+	
+	// 배열 정렬
+	ar.sort(); // 오름차순 정렬
+	document.writeln(ar.length + "개 : " + ar.join(", ") + "<br>");
+	ar.sort(function(a,b){
+		return b-a;
+	}); // 내림차순 정렬
+	document.writeln(ar.length + "개 : " + ar.join(", ") + "<br>");
+	
+	var ar2 = ar.splice(2, 3);
+	document.writeln(ar.length + "개 : " + ar.join(", ") + "<br>");
+	document.writeln(ar2.length + "개 : " + ar2.join(", ") + "<br>");
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

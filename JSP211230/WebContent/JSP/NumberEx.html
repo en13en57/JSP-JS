@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>내장 객체 : Number</title>
+<script type="text/javascript">
+	var number = 123.456;
+	var objNumber = new Number(123.456);
+	// number는 기본타입, objNumber는 객체 타입
+	document.writeln(typeof(number) + " : " + number + "<br>");
+	document.writeln(typeof(objNumber) + " : " + objNumber + "<br><hr>");
+	// 기본타입에 메서드를 사용 할 수 있을까?
+	// 있다. .을찍으면 객체타입으로 바꾼다.
+	// toFixed(자릿수) : 소수이하 몇자리까지. 자동 반올림
+	document.writeln(typeof(number) + " : " + number.toFixed(2) + "<br>");
+	document.writeln(typeof(objNumber) + " : " + objNumber.toFixed(2) + "<br><hr>");
+	
+	// 기본타입에는 메서드를 추가할 수 있을까?
+	// 안된다. ㅠㅠㅠ
+	number.showType = function(){
+		return "숫자타입";
+	}
+	// document.writeln(typeof(number) + " : " + number.showType() + "<br>");
+	// document.writeln(typeof(objNumber) + " : " + objNumber.showType() + "<br><hr>");
+	
+	// 객체에 메서드를 추가할 수 있을까?
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

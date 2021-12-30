@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Object 객체</title>
+<script type="text/javascript">
+	var obj1 = {"name":"나바보", "age":44,  "gender":true};
+	var obj2 = new Object();
+	
+	// 7개의 기본 메서드를 가진다.
+	document.writeln(obj1 + "<br>");
+	document.writeln(obj2 + "<br>");
+	// 오버로딩이 가능하다.
+	Object.prototype.toString = function(){
+		return "객체";
+	}
+	document.writeln(obj1 + "<br>");
+	document.writeln(obj2 + "<br>");
+	
+	
+	// 모든 속성을 출력이 가능하다.
+	document.writeln("<ul>");
+	for(key in obj1){
+		document.writeln("<li>" + key + " : " + obj1[key] + "</li>");
+	}
+	document.writeln("</ul>");
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

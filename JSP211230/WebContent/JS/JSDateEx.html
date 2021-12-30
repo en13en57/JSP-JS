@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>입력한 날짜까지의 일수를 구해서 출력하기</title>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.2/underscore-umd-min.js"></script>
+<script type="text/javascript">
+	_.each([1,2,3], alert);
+	
+	function getDays(){
+		var year = document.getElementById("year").value * 1;
+		var month = document.getElementById("month").value * 1;
+		var date = document.getElementById("date").value * 1;
+		
+		document.getElementById("result").innerHTML = (year + "년 " + month + "월 " + date + "일<br><hr>");
+		// 입력한 날짜
+		var date = new Date(year, month-1, date);
+		
+		var today = new Date(); // 오늘의 날짜!!!
+		document.getElementById("result").innerHTML += (date + "<br>" + today + "<br><hr>");
+		
+		// 두 날짜 사이의 일수 구하기
+		var interval = today.getTime() - date.getTime();
+		document.getElementById("result").innerHTML += "두날짜 사이의 1/1000초 간격 : " + interval + "<br><hr>";
+		
+		document.getElementById("result").innerHTML += "두날짜 사이의 일수 : " 
+													+ (Math.floor(interval/(1000*60*60*24))) 
+													+ "일<br><hr>";
+		
+	}
+</script>
+<style type="text/css">
+	div#result {
+		width: 500px; height: 300px; border: 1px solid gray;
+		font-size: 10pt; text-align: center;
+	}
+</style>
+</head>
+<body>
+	<input type="number" size="3" id="year" value="2000">년
+	<input type="number" size="3" id="month" value="1" max="12" min="1">월
+	<input type="number" size="3" id="date" value="1" max="31" min="1">일
+	<button onclick="getDays()">일수 구하기</button>
+	<br /><hr />
+	<div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>내장 객체 : Nember</title>
+<script type="text/javascript">
+	var number = 123.456;
+	var objNumber = new Number(123.456);
+	// number는 기본타입, objNumber는 객체 타입
+	document.writeln(typeof(number) + " : " + number + "<br>");
+	document.writeln(typeof(objNumber) + " : " + objNumber + "<br><hr>");
+	
+	// 기본타입에 메서드를 사용할 수 있을까?
+	// 있다. 점(.)을 찍으면 객체 타입으로 바뀐다.	
+	// toFixed(자릿수) : 소수이하 몇자리까지. 자동 반올림
+	document.writeln(typeof(number) + " : " + number.toFixed(2) + "<br>");
+	document.writeln(typeof(objNumber) + " : " + objNumber.toFixed(2) + "<br><hr>");
+
+	// 기본타입에는 메서드를 추가할 수 있을까?
+	// 않된다. ㅠㅠㅠ
+	number.showType = function(){
+		return "숫자타입";
+	};
+	
+	//document.writeln(typeof(number) + " : " + number.showType() + "<br>");
+	//document.writeln(typeof(objNumber) + " : " + objNumber.showType() + "<br><hr>");
+	
+	// 객체에 메서드를 추가할 수 있을까?
+	// 이렇게 변수에 추가하면 않된다. ㅠㅠㅠ
+	/*
+	objNumber.showType = function(){
+		return "숫자타입";
+	};
+	*/
+	// 객체에 추가해야 한다. 그렇게 되면 기본 타입에서도 사용이 가능하다.
+	Number.prototype.showType = function(){
+		return "숫자타입";
+	};
+	document.writeln(typeof(number) + " : " + number.showType() + "<br>");
+	document.writeln(typeof(objNumber) + " : " + objNumber.showType() + "<br><hr>");
+</script>
+</head>
+<body>
+
+</body>
+</html>

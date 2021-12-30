@@ -1,0 +1,4 @@
+1. 쿠키
+2. jsp:include
+3. @ include
+4. 에러페이지 처리

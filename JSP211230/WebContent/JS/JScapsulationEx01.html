@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트의 캡슐화</title>
+<script type="text/javascript">
+	// 생성자 함수
+	function Rectangle(width, height){
+		this.width = width;
+		this.height = height;
+	}
+	// 메서드 추가
+	Rectangle.prototype.getArea = function(){
+		return this.width * this.height;
+	}
+	
+	var rect1 = new Rectangle(100, 50);
+	document.writeln("사각형의 넓이 : " + rect1.getArea() + "<br>");
+
+	// 이런 문제가 발생한다.
+	rect1.width = -50;
+	document.writeln("사각형의 넓이 : " + rect1.getArea() + "<br>");
+	
+	// 넓이가 은수가 될 수는 없다....
+	// 정보의 은폐가 이루어지지 않았기 때문이다.
+</script>
+</head>
+<body>
+
+</body>
+</html>
