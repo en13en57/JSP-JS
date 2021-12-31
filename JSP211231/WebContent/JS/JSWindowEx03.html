@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>윈도우 객체</title>
+<script type="text/javascript">
+	window.onload = function(){
+		
+	}
+	function getName(){
+		var win = open('form.jsp');
+		win.document.getElementById("msg").innerHTML = "이름을 입력하세요"
+	}
+</script>
+<style type="text/css">
+</style>
+</head>
+<body>
+
+	<h1>새로운 창 열기</h1>
+	이름 : <input type="text" id="name" name="name" disabled="disabled" />
+	<button onclick="getName()">새창으로 입력 입력받기</button>
+</body>
+</html>

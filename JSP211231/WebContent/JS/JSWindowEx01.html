@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>window 객체</title>
+<script type="text/javascript">
+	var result = "<ul>";
+	for(key in window){
+		result += "<li>";
+		result += key + " : " + window[key]
+		result += "</li>";
+	}
+	result += "</ul>";
+	
+	document.writeln(result);
+</script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+</body>
+</html>
