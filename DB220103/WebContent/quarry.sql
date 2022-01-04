@@ -329,10 +329,10 @@ INSERT INTO `HR_JOB_HISTORY` (`EMPLOYEE_ID`, `START_DATE`, `END_DATE`, `JOB_ID`,
 --
 -- 테이블 구조 `HR_LOCATIONS`
 --
-
+information_schemainformation_schemajavadbmydb
 CREATE TABLE IF NOT EXISTS `HR_LOCATIONS` (
   `LOCATION_ID` int(11) NOT NULL COMMENT 'Primary key of locations table',
-  `STREET_ADDRESS` varchar(40) DEFAULT NULL COMMENT 'Street address of an office, warehouse, or production site of a company.\r\nContains building number and street name',
+  `STREET_ADDRESS` varchar(4mydbjavadb0) DEFAULT NULL COMMENT 'Street address of an office, warehouse, or production site of a company.\r\nContains building number and street name',
   `POSTAL_CODE` varchar(12) DEFAULT NULL COMMENT 'Postal code of the location of an office, warehouse, or production site of a company.',
   `CITY` varchar(30) NOT NULL COMMENT 'A not null column that shows city where an office, warehouse, or production site of a company is located.',
   `STATE_PROVINCE` varchar(25) DEFAULT NULL COMMENT 'State or Province where an office, warehouse, or production site of a company is located.',
@@ -344,7 +344,7 @@ CREATE TABLE IF NOT EXISTS `HR_LOCATIONS` (
 --
 -- 테이블의 덤프 데이터 `HR_LOCATIONS`
 --
-
+javadbjavadbjavadbjavadbjavadbmydb
 INSERT INTO `HR_LOCATIONS` (`LOCATION_ID`, `STREET_ADDRESS`, `POSTAL_CODE`, `CITY`, `STATE_PROVINCE`, `COUNTRY_ID`) VALUES
 (1000, '1297 Via Cola di Rie', '00989', 'Roma', NULL, 'IT'),
 (1100, '93091 Calle della Testa', '10934', 'Venice', NULL, 'IT'),
@@ -430,3 +430,4 @@ ALTER TABLE `HR_JOB_HISTORY`
 --
 ALTER TABLE `HR_LOCATIONS`
   ADD CONSTRAINT `LOC_C_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `HR_COUNTRIES` (`COUNTRY_ID`);
+jjavadbjavadbjavadbjavadbjavadbjavadbmydbavadbjavadbjavadbjavadbjavadbjavadbjavadb
