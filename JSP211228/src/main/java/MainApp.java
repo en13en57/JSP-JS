@@ -16,9 +16,11 @@ public class MainApp {
 			Document document = Jsoup.connect(addr).get();
 			Elements elements = document.select("#writeContents p img");
 			System.out.println(elements.size() + "개");
+		
 			int count = 0;
 			for(Element e : elements) {
-				//System.out.println("http://flash24.co.kr/"  + e.attr("src"));
+				System.out.println("http://flash24.co.kr/"  + e.attr("src"));
+				
 				String urlAddress = "http://flash24.co.kr/"  + e.attr("src");
 				URL url = new URL(urlAddress);
 				InputStream is = url.openStream();
@@ -33,6 +35,7 @@ public class MainApp {
 				fos.close();
 			}
 			System.out.println("저장완료!!!");
+	
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
