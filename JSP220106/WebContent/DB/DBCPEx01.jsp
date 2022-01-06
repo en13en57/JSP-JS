@@ -1,4 +1,4 @@
-<%@page import="kr.green.jdbc.JDBCUtil"%>
+<%@page import="kr.green.jdbc.DBCPUtil"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="javax.naming.InitialContext"%>
@@ -25,7 +25,7 @@ Connection conn = ds.getConnection();
 </head>
 <body>
 	<h1>연결성공 : <%=conn%></h1>
-	<% JDBCUtil.close(conn); // 자원을 Connection Pool로 반환한다. %>
+	<% DBCPUtil.close(conn); // 자원을 Connection Pool로 반환한다. %>
 </body>
 </html>
 

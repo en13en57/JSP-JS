@@ -1,11 +1,11 @@
-<%@page import="kr.green.jdbc.JDBCUtil"%>
+<%@page import="kr.green.jdbc.DBCPUtil"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="javax.naming.Context"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-Connection conn = JDBCUtil.getDBCP();
+Connection conn = DBCPUtil.getDBCP();
 
 %>
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ Connection conn = JDBCUtil.getDBCP();
 </head>
 <body>
 	<h1>연결성공 : <%=conn%></h1>
-	<% JDBCUtil.close(conn); // 자원을 Connection Pool로 반환한다. %>
+	<% DBCPUtil.close(conn); // 자원을 Connection Pool로 반환한다. %>
 </body>
 </html>
 

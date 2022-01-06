@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import kr.green.jdbc.JDBCUtil;
+import kr.green.jdbc.DBCPUtil;
 import kr.green.memo.vo.MemoVO;
 
 // SQL 명령어 1개당 1개의 메서드로 만든다.
@@ -38,7 +38,7 @@ public class MemoDAO {
 		pstmt.setString(3, vo.getContent());		
 		pstmt.setString(4, vo.getIp());		
 		count = pstmt.executeUpdate();
-		JDBCUtil.close(pstmt);
+		DBCPUtil.close(pstmt);
 		return count;
 	}
 	// 2. 수정하기
@@ -50,7 +50,7 @@ public class MemoDAO {
 		pstmt.setString(2, vo.getIp());		
 		pstmt.setInt(3, vo.getIdx());		
 		count = pstmt.executeUpdate();
-		JDBCUtil.close(pstmt);
+		DBCPUtil.close(pstmt);
 		return count;
 	}
 	
@@ -61,7 +61,7 @@ public class MemoDAO {
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, idx);		
 		count = pstmt.executeUpdate();
-		JDBCUtil.close(pstmt);
+		DBCPUtil.close(pstmt);
 		return count;
 	}
 	
@@ -86,8 +86,8 @@ public class MemoDAO {
 				list.add(vo);
 			}while(rs.next());
 		}
-		JDBCUtil.close(rs);
-		JDBCUtil.close(stmt);
+		DBCPUtil.close(rs);
+		DBCPUtil.close(stmt);
 		return list;
 	}
 	// 5. 1개 얻기
@@ -107,8 +107,8 @@ public class MemoDAO {
 				vo.setIp(rs.getString("ip"));
 				// 채워진 글 1개(vo)를 리스트에 넣는다.
 		}
-		JDBCUtil.close(rs);
-		JDBCUtil.close(stmt);
+		DBCPUtil.close(rs);
+		DBCPUtil.close(stmt);
 		return vo;
 	}
 	// 6. 전체개수 얻기
@@ -119,8 +119,8 @@ public class MemoDAO {
 		ResultSet rs = stmt.executeQuery(sql);
 		rs.next();
 		totalCount = rs.getInt(1);
-		JDBCUtil.close(rs);
-		JDBCUtil.close(stmt);
+		DBCPUtil.close(rs);
+		DBCPUtil.close(stmt);
 		return totalCount;
 	}
 }

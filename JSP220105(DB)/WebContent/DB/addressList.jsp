@@ -1,3 +1,4 @@
+<%@page import="kr.green.jdbc.JDBCUtil"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="kr.green.address.vo.AddressVO"%>
 <%@page import="java.util.List"%>
@@ -5,7 +6,6 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="kr.green.jdbc.JDBCUtil"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	Connection conn = null;
@@ -19,18 +19,18 @@
 		stmt = conn.createStatement();
 		rs = stmt.executeQuery(sql); 
 		if(rs.next()){
-			// 데이터가 있다면 리스트 객체를 만든다.
-			list = new ArrayList<>();
-			do{
-				// 레코드 1개강 VO객체 1개
-				AddressVO vo = new AddressVO();
-				vo.setIdx(rs.getInt("idx"));
-				vo.setName(rs.getString("name"));
-				vo.setBirth(rs.getDate("birth"));
-				vo.setPhone(rs.getString("phone"));
-				// 리스트에 vo를 넣는다.
-				list.add(vo);
-			}while(rs.next());
+	// 데이터가 있다면 리스트 객체를 만든다.
+	list = new ArrayList<>();
+	do{
+		// 레코드 1개강 VO객체 1개
+		AddressVO vo = new AddressVO();
+		vo.setIdx(rs.getInt("idx"));
+		vo.setName(rs.getString("name"));
+		vo.setBirth(rs.getDate("birth"));
+		vo.setPhone(rs.getString("phone"));
+		// 리스트에 vo를 넣는다.
+		list.add(vo);
+	}while(rs.next());
 		}
 		// ----------------------------------------------------------------------
 	}catch(SQLException e){
@@ -40,7 +40,6 @@
 		JDBCUtil.close(stmt);
 		JDBCUtil.close(conn);
 	}
-	
 %>
 <!DOCTYPE html>
 <html>

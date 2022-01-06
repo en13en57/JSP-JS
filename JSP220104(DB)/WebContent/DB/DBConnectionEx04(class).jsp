@@ -1,4 +1,4 @@
-<%@page import="kr.green.jdbc.JDBCUtil"%>
+<%@page import="kr.green.jdbc.DBCPUtil"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.ResultSet"%>
@@ -16,7 +16,7 @@
 	String password = "123456";
 	try{
 		// 3. 연결한다.
-		conn = JDBCUtil.getConnection(className, url, user, password);
+		conn = DBCPUtil.getConnection(className, url, user, password);
 		out.println("연결 성공 : " + conn + "<br>");
 		// 4. 사용한다
 		stmt = conn.createStatement();
@@ -28,11 +28,11 @@
 		// 읽어보자 : select 명령만 executeQuery로 실행하고 ResultSet으로 받는다.
 		rs = stmt.executeQuery("select * from address order by name desc");
 		if(rs.next()){
-			do{                // 타입에 맞추어서
-				out.println(rs.getString("name") + ". " + rs.getString("phone") + "<br>");
-			}while(rs.next());
+	do{                // 타입에 맞추어서
+		out.println(rs.getString("name") + ". " + rs.getString("phone") + "<br>");
+	}while(rs.next());
 		}else{
-			out.println("데이터 없다 <br>");
+	out.println("데이터 없다 <br>");
 		}
 		
 		// 삭제해보자
@@ -54,8 +54,8 @@
 		;
 	}finally{
 		// 5. 닫는다
-		JDBCUtil.close(rs);
-		JDBCUtil.close(stmt);
-		JDBCUtil.close(conn);
+		DBCPUtil.close(rs);
+		DBCPUtil.close(stmt);
+		DBCPUtil.close(conn);
 	}
 %>

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import kr.green.jdbc.JDBCUtil;
+import kr.green.jdbc.DBCPUtil;
 import kr.green.memo.dao.MemoDAO;
 import kr.green.memo.vo.MemoVO;
 
@@ -31,7 +31,7 @@ public class MemoService {
 		int count = 0;
 		Connection conn = null;
 		try {
-			conn = JDBCUtil.getConnection();
+			conn = DBCPUtil.getConnection();
 			conn.setAutoCommit(false);
 			//--------------------------------------------------------------------
 			// 이 부분만 바뀐다
@@ -46,10 +46,10 @@ public class MemoService {
 			//--------------------------------------------------------------------
 			conn.commit();
 		}catch (SQLException e) {
-			JDBCUtil.rollback(conn);
+			DBCPUtil.rollback(conn);
 			e.printStackTrace();
 		}finally {
-			JDBCUtil.close(conn);
+			DBCPUtil.close(conn);
 		}
 		return count;
 	}
@@ -59,7 +59,7 @@ public class MemoService {
 		int count = 0;
 		Connection conn = null;
 		try {
-			conn = JDBCUtil.getConnection();
+			conn = DBCPUtil.getConnection();
 			conn.setAutoCommit(false);
 			//--------------------------------------------------------------------
 			// 이 부분만 바뀐다
@@ -75,10 +75,10 @@ public class MemoService {
 			//--------------------------------------------------------------------
 			conn.commit();
 		}catch (SQLException e) {
-			JDBCUtil.rollback(conn);
+			DBCPUtil.rollback(conn);
 			e.printStackTrace();
 		}finally {
-			JDBCUtil.close(conn);
+			DBCPUtil.close(conn);
 		}
 		return count;
 	}
@@ -88,7 +88,7 @@ public class MemoService {
 		int count = 0;
 		Connection conn = null;
 		try {
-			conn = JDBCUtil.getConnection();
+			conn = DBCPUtil.getConnection();
 			conn.setAutoCommit(false);
 			//--------------------------------------------------------------------
 			// 이 부분만 바뀐다
@@ -104,10 +104,10 @@ public class MemoService {
 			//--------------------------------------------------------------------
 			conn.commit();
 		}catch (SQLException e) {
-			JDBCUtil.rollback(conn);
+			DBCPUtil.rollback(conn);
 			e.printStackTrace();
 		}finally {
-			JDBCUtil.close(conn);
+			DBCPUtil.close(conn);
 		}
 		return count;
 	}
@@ -117,7 +117,7 @@ public class MemoService {
 		List<MemoVO> list = null;
 		Connection conn = null;
 		try {
-			conn = JDBCUtil.getConnection();
+			conn = DBCPUtil.getConnection();
 			conn.setAutoCommit(false);
 			//--------------------------------------------------------------------
 			// 이 부분만 바뀐다
@@ -125,10 +125,10 @@ public class MemoService {
 			//--------------------------------------------------------------------
 			conn.commit();
 		}catch (SQLException e) {
-			JDBCUtil.rollback(conn);
+			DBCPUtil.rollback(conn);
 			e.printStackTrace();
 		}finally {
-			JDBCUtil.close(conn);
+			DBCPUtil.close(conn);
 		}
 		return list;
 	}
@@ -138,7 +138,7 @@ public class MemoService {
 		MemoVO vo = null;
 		Connection conn = null;
 		try {
-			conn = JDBCUtil.getConnection();
+			conn = DBCPUtil.getConnection();
 			conn.setAutoCommit(false);
 			//--------------------------------------------------------------------
 			// 이 부분만 바뀐다
@@ -146,10 +146,10 @@ public class MemoService {
 			//--------------------------------------------------------------------
 			conn.commit();
 		}catch (SQLException e) {
-			JDBCUtil.rollback(conn);
+			DBCPUtil.rollback(conn);
 			e.printStackTrace();
 		}finally {
-			JDBCUtil.close(conn);
+			DBCPUtil.close(conn);
 		}
 		return vo;
 	}

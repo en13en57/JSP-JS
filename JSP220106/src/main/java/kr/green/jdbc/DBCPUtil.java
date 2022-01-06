@@ -11,7 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class JDBCUtil {
+public class DBCPUtil {
 	// 0. DBCP(Database Connection Pool)에서 커넥션 얻기
 	public static Connection getDBCP() {
 		Connection conn = null;
@@ -36,8 +36,8 @@ public class JDBCUtil {
 	public static Connection getConnection() {
 		Connection conn = null;
 		String className = "org.mariadb.jdbc.Driver";
-		String url = "jdbc:mariadb://localhost:3306/javadb";
-		String user = "javauser";
+		String url = "jdbc:mariadb://localhost:3306/jspdb";
+		String user = "jspuser";
 		String password = "123456";		
 		try {
 			// 1) 클래스 로드

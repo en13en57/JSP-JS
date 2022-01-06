@@ -1,7 +1,7 @@
+<%@page import="kr.green.jdbc.DBCPUtil"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Statement"%>
-<%@page import="kr.green.jdbc.JDBCUtil"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="javax.naming.InitialContext"%>
@@ -14,7 +14,7 @@ PreparedStatement pstmt = null;
 ResultSet  rs = null;
 
 try{
-	conn = JDBCUtil.getDBCP();
+	conn = DBCPUtil.getDBCP();
 	System.out.println("연결 성공 : " + conn);
 	// 1. 트랜젝션을 처리하기 위해 자동커밋을 취소한다.
 	conn.setAutoCommit(false);
@@ -69,14 +69,14 @@ try{
 	conn.commit();
 }catch(Exception e){
 	// 3. 여러개 명령어 중에서 1개라도 에러가 발생하면 실행한 명령 모두를 취소하자!!!
-	JDBCUtil.rollback(conn);
+	DBCPUtil.rollback(conn);
 	System.out.println("연결 실패 : " + e.getMessage());
 	e.printStackTrace();
 }finally{
-	JDBCUtil.close(rs);
-	JDBCUtil.close(stmt);
-	JDBCUtil.close(pstmt);
-	JDBCUtil.close(conn);
+	DBCPUtil.close(rs);
+	DBCPUtil.close(stmt);
+	DBCPUtil.close(pstmt);
+	DBCPUtil.close(conn);
 }
 %>
 
