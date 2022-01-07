@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+	var check=1; // 마지막에 어디에 있었는지를 판단하기 위한 전역 변수
+	window.onload = function(){
+		// onfocus : 포커스를 가지면
+		document.querySelector("#content1").onfocus = function(){
+			// 1번 박스에 있으면 1을
+			check=1;
+		}
+		document.querySelector("#content2").onfocus = function(){
+			// 2번 박스에 있으면 2를 가진다.
+			check=2;
+		}
+		document.getElementById("remove").onclick = function(){
+			// 입력된 내용을 가져온다
+			var obj = document.querySelector("#content" + check); // 뒤에 번호를 붙여준다.
+			var value = obj.value;
+			// 내용이 있을때만
+			if(value!=null && value.length>0){
+				// 원본에서 맨뒤의 1글자를 제하고 잘라낸다.
+				value = value.substring(0, value.length-1);
+				// 그 값으로 내용을 변경한다.
+				obj.value  = value;
+			}
+		}
+		
+	}
+</script>
+</head>
+<body>
+	<input type="text" id="content1" value="1234567890"/> <br />
+	<input type="text" id="content2" value="1234567890"/> <br />
+	<button id="remove">1글자지우기</button>
+
+</body>
+</html>

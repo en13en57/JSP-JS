@@ -1,10 +1,10 @@
+<%@page import="kr.green.jdbc.JDBCUtil"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.green.memo.vo.MemoVO"%>
 <%@page import="kr.green.memo.dao.MemoDAO"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Statement"%>
-<%@page import="kr.green.jdbc.JDBCUtil"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="javax.naming.InitialContext"%>

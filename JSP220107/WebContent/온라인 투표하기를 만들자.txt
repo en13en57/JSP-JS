@@ -1,0 +1,838 @@
+온라인 투표하기를 만들자
+------------------------
+1. 데이터를 어디에 저장을 할까?
+   MariaDB를 사용하자!!!
+   
+2. 어떤 모양으로 저장을 할까?
+   제목 : subject  - varchar(100) - not null
+   항목 : 항목1|~|항목2	.... : item - text - not null
+   투표수 : 투표수1|~|투표수2.... : count - text - not null
+   시작일 : startDate  - varchar(10) - not null   
+   종료일 : endDate    - varchar(10) - not null 
+   설명   : comment    - text
+
+   테이블 작성  : poll
+   
+   create table poll(
+     idx int primary key auto_increment,
+     subject varchar(100) not null, 
+     item  text not null, 
+     count text not null, 
+     startDate varchar(10) not null,
+     endDate varchar(10) not null,
+     comment text
+  );
+  
+3. 테이블과 1:1 대응되는 VO클래스를 작성한다.
+---------------------------------------------------------------------------------------------
+package kr.green.poll.vo;
+/*
+create table poll(
+     idx int primary key auto_increment,
+     subject varchar(100) not null, 
+     item  text not null, 
+     count text not null, 
+     startDate varchar(10) not null,
+     endDate varchar(10) not null,
+     comment text
+);
+ */
+public class PollVO {
+	private int idx;
+	private String subject;
+	private String item;
+	private String count;
+	private String startDate;
+	private String endDate;
+	private String comment;
+	
+	// item과 count를 구분자로 구분하여 배열로 자동으로 저장되면 
+	// 처리가 편리하다.
+	private String[] pollItems;
+	private int[] pollCounts;
+	
+	public int getIdx() {
+		return idx;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	
+	public String getItem() {
+		return item;
+	}
+	public void setItem(String item) {
+		this.item = item;
+		// 아이템을 구분자로 분리해서 배열에 넣어준다.
+		pollItems = this.item.split("@@");
+	}
+	public String getCount() {
+		return count;
+	}
+	public void setCount(String count) {
+		// String문자열을 구분자로 구분해서 숫자배열로 만들어 준다.
+		this.count = count;
+		String[] cnts = this.count.split("@@");
+		this.pollCounts = new int[cnts.length];
+		for(int i=0;i<cnts.length;i++) {
+			this.pollCounts[i] = Integer.parseInt(cnts[i]);
+		}
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	public String[] getPollItems() {
+		return pollItems;
+	}
+	// 배열이 들어오면 @@로 연결하여 넣어준다.
+	public void setPollItems(String[] pollItems) {
+		this.pollItems = pollItems;
+		this.item = String.join("@@", pollItems);
+	}
+	public int[] getPollCounts() {
+		return pollCounts;
+	}
+	// 배열이 들어오면 @@로 연결하여 넣어준다.
+	public void setPollCounts(int[] pollCounts) {
+		this.pollCounts = pollCounts;
+		count = "";
+		for(int i=0;i<pollCounts.length;i++) {
+			count += pollCounts[i];
+			if(i!=pollCounts.length-1) count += "@@";
+		}
+	}
+	
+	// 전체 투표수를 리턴하는 메서드 추가
+	public int getTotalCount() {
+		int totalCount = 0;
+		for(int i=0;i<pollCounts.length;i++) totalCount += pollCounts[i];
+		return totalCount;
+	}
+	// 지정 번호의 백분율을 구해서 리턴하는 메서드 추가
+	public String getPercent(int index) {
+		return String.format("%.2f", (double)pollCounts[index]/getTotalCount() * 100);
+	}
+	
+	@Override
+	public String toString() {
+		return "PollVO [idx=" + idx + ", subject=" + subject + ", item=" + item + ", count=" + count + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", comment=" + comment + "]";
+	}
+} 
+---------------------------------------------------------------------------------------------  
+4. SQL명령어 1개당 1개의 메서드를 가지는 DAO클래스를 만들자
+---------------------------------------------------------------------------------------------
+package kr.green.poll.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import kr.green.jdbc.JDBCUtil;
+import kr.green.poll.vo.PollVO;
+
+public class PollDAO {
+	//-----------------------------------------------------------------------
+	// 싱글톤 패턴으로 만들자
+	// 1. 자기 자신의 객체를 정적 멥버로 가진다.
+	private static PollDAO instance = new PollDAO();
+	// 2. 밖에서 객체를 생성하지 못하도록 생성자를 private으로 만든다.
+	private PollDAO() {}
+	// 3. 만들어져 있는 객체를 사용하도록 만든다.
+	public static PollDAO getInstance() {
+		return instance;
+	}
+	//-----------------------------------------------------------------------
+	// 1. 새로운 투표등록 
+	public void insert(Connection conn, PollVO vo) throws SQLException {
+		String sql = "insert into poll (subject,item,count,startDate,endDate) values (?,?,?,?,?)";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, vo.getSubject());
+		pstmt.setString(2, vo.getItem());
+		pstmt.setString(3, vo.getCount());
+		pstmt.setString(4, vo.getStartDate());
+		pstmt.setString(5, vo.getEndDate());
+		pstmt.executeUpdate();
+		JDBCUtil.close(pstmt);
+	}
+	// 2. 1개투표 읽기  -- 투표폼
+	public PollVO selectByIdx(Connection conn, int idx) throws SQLException {
+		PollVO vo = null;
+		String sql = "select * from poll where idx=" + idx;
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {
+			vo = new PollVO();
+			vo.setIdx(rs.getInt("idx"));
+			vo.setSubject(rs.getString("subject"));
+			vo.setItem(rs.getString("item"));
+			vo.setCount(rs.getString("count"));
+			vo.setStartDate(rs.getString("startDate"));
+			vo.setEndDate(rs.getString("endDate"));
+			vo.setComment(rs.getString("comment"));
+		}
+		JDBCUtil.close(rs);
+		JDBCUtil.close(stmt);
+		return vo;
+	}
+	// 3. 모든 투표보기 -- 목록
+	public List<PollVO> selectList(Connection conn) throws SQLException{
+		List<PollVO> list = null;
+		String sql = "select * from poll order by idx desc";
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next()) {
+			list = new ArrayList<PollVO>();
+			do {
+				PollVO vo = new PollVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setSubject(rs.getString("subject"));
+				vo.setItem(rs.getString("item"));
+				vo.setCount(rs.getString("count"));
+				vo.setStartDate(rs.getString("startDate"));
+				vo.setEndDate(rs.getString("endDate"));
+				vo.setComment(rs.getString("comment"));
+				
+				list.add(vo);
+			}while(rs.next());
+		}
+		JDBCUtil.close(rs);
+		JDBCUtil.close(stmt);
+		return list;
+	}
+	// 4. 투표수 증가하기 
+	public void update(Connection conn, PollVO vo) throws SQLException {
+		String sql = "update poll set count=? where idx=?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, vo.getCount());
+		pstmt.setInt(2, vo.getIdx());
+		pstmt.executeUpdate();
+		JDBCUtil.close(pstmt);
+	}
+}
+
+
+---------------------------------------------------------------------------------------------  
+5. 로직 1개당 1개의 메서드를 가지는 Service클래스를 만들자
+---------------------------------------------------------------------------------------------
+package kr.green.poll.service;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.green.jdbc.JDBCUtil;
+import kr.green.poll.dao.PollDAO;
+import kr.green.poll.vo.PollVO;
+
+public class PollService {
+	//-----------------------------------------------------------------------
+	// 싱글톤 패턴으로 만들자
+	// 1. 자기 자신의 객체를 정적 멥버로 가진다.
+	private static PollService instance = new PollService();
+	// 2. 밖에서 객체를 생성하지 못하도록 생성자를 private으로 만든다.
+	private PollService() {}
+	// 3. 만들어져 있는 객체를 사용하도록 만든다.
+	public static PollService getInstance() {
+		return instance;
+	}
+	//-----------------------------------------------------------------------
+	// 1. 목록을 얻어오는 메서드 --- 목록보기
+	public List<PollVO> selectList(){
+		List<PollVO> list = null;
+		Connection conn = null;
+		try {
+			conn = JDBCUtil.getConnection();
+			conn.setAutoCommit(false);
+			PollDAO dao = PollDAO.getInstance();
+			//---------------------------------------------------------------
+			list = dao.selectList(conn);
+			//---------------------------------------------------------------
+			conn.commit();
+		}catch (SQLException e) {
+			JDBCUtil.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn);
+		}
+		return list;
+	}
+
+	// 2. 1개 가져오기
+	public PollVO selectByIdx(int idx){
+		PollVO vo = null;
+		Connection conn = null;
+		try {
+			conn = JDBCUtil.getConnection();
+			conn.setAutoCommit(false);
+			PollDAO dao = PollDAO.getInstance();
+			//---------------------------------------------------------------
+			vo = dao.selectByIdx(conn, idx);
+			//---------------------------------------------------------------
+			conn.commit();
+		}catch (SQLException e) {
+			JDBCUtil.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn);
+		}
+		return vo;
+	}
+	// 3. 투표 항목 증가시키기
+	public void update(PollVO vo) {
+		Connection conn = null;
+		try {
+			conn = JDBCUtil.getConnection();
+			conn.setAutoCommit(false);
+			PollDAO dao = PollDAO.getInstance();
+			//---------------------------------------------------------------
+			dao.update(conn, vo);
+			//---------------------------------------------------------------
+			conn.commit();
+		}catch (SQLException e) {
+			JDBCUtil.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn);
+		}
+	}
+	// 4. 새로운 투표 저장하기
+	public void insert(PollVO vo) {
+		Connection conn = null;
+		try {
+			conn = JDBCUtil.getConnection();
+			conn.setAutoCommit(false);
+			PollDAO dao = PollDAO.getInstance();
+			//---------------------------------------------------------------
+			if(vo!=null && vo.getSubject()!=null && vo.getPollItems()!=null){
+				dao.insert(conn, vo);
+			}
+			//---------------------------------------------------------------
+			conn.commit();
+		}catch (SQLException e) {
+			JDBCUtil.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn);
+		}
+	}
+}
+
+---------------------------------------------------------------------------------------------  
+6. 서비스 클래스를 이용하여 화면을 만들어 주는 JSP파일을 만들자
+---------------------------------------------------------------------------------------------
+1) 투표 목록보기 - pollList.jsp
+---------------------------------------------------------------------------------------------
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="kr.green.poll.service.PollService"%>
+<%@page import="kr.green.poll.vo.PollVO"%>
+<%@page import="java.util.List"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	List<PollVO> list = PollService.getInstance().selectList();
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>투표목록보기</title>
+<%-- 부트스트랩을 사용하기 위한 준비 시작 --%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩을 사용하기 위한 준비 끝 --%>
+<script type="text/javascript">
+	$(function(){ // window.onload
+		// id가 insertBtn을 클릭하면
+		$("#insertBtn").click(function(){
+			location.href = 'pollInsertForm.jsp';
+		});
+	});
+</script>
+<style type="text/css">
+	table { width:800px; padding: 5px; margin: auto;}
+	th { padding: 5px; background-color: silver; border: 1px solid gray;text-align: center;}
+	td { padding: 5px; border: 1px solid gray;}
+	.title { border: none; text-align: center; font-size: 18pt;}
+	.sub_title { border: none; text-align: right; }
+</style>
+</head>
+<body>
+	<table>
+		<tr>
+			<td colspan="4" class="title">투표 목록 보기</td>
+		</tr>
+		<tr>
+			<td colspan="4" class="sub_title">
+			<%
+				if(list==null){
+					out.println("등록된 투표 : 0개");
+				}else{
+					out.println("등록된 투표 : " + list.size() + "개");
+				}
+			%>
+			</td>
+		</tr>
+		<tr>
+			<th>번호</th>
+			<th width="70%">투표제목</th>
+			<th>시작일</th>
+			<th>종료일</th>
+		</tr>
+		<%
+			if(list!=null){
+				for(PollVO vo : list){
+					out.println("<tr align='center'>");
+					out.println("<td>");
+					out.println(vo.getIdx());
+					out.println("</td>");
+					out.println("<td align='left'>");
+					out.println(vo.getSubject());
+					// 오늘의 날짜를 0000-00-00형식으로 만든다.
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String today = sdf.format(new Date());
+					// 오늘이 시작일과 종료일 사이에 있다면 투표하기 버튼을 만들어준다.
+					if(today.compareTo(vo.getStartDate())>=0 && today.compareTo(vo.getEndDate())<=0){
+		%>
+		<button type="button" class="btn btn-outline-success btn-sm" onclick="location.href='pollForm.jsp?idx=<%=vo.getIdx()%>'">
+		투표하기
+		</button>
+		<%						
+					}
+		%>
+		<button type="button" class="btn btn-outline-success btn-sm"  onclick="location.href='pollResult.jsp?idx=<%=vo.getIdx()%>'">
+		결과보기
+		</button>
+		<%						
+					out.println("</td>");
+					out.println("<td>");
+					out.println(vo.getStartDate());
+					out.println("</td>");
+					out.println("<td>");
+					out.println(vo.getEndDate());
+					out.println("</td>");
+					out.println("</tr>");
+				}
+			}else{
+				out.println("<tr><td colspan='4' align='center'>등록된 투표가 없습니다.</td></tr>");				
+			}
+		%>
+		<tr>
+			<td colspan="4" align="right" style="border: none;">
+				<button type="button" class="btn btn-outline-success btn-sm" id="insertBtn">새로운 투표 등록하기</button>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
+---------------------------------------------------------------------------------------------
+2) 투표등록하기 -- pollInsertForm.jsp -> pollInsertOk.jsp
+---------------------------------------------------------------------------------------------
+
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>투표 등록 하기</title>
+<%-- 부트스트랩을 사용하기 위한 준비 시작 --%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩을 사용하기 위한 준비 끝 --%>
+<script type="text/javascript">
+var max = 10, min = 2, count = 2;
+function addFile(){
+	if(count==max){
+		alert('최대 ' + max + "개의 항목까지만 지원 합니다.");
+		return;
+	}
+	// 태그 추가
+	++count;
+	// div태그 만들고 속성 추가
+	var divTag = document.createElement("div");
+	divTag.id = "item"+count;
+	// 텍스트노드 만들고 div태그에 추가
+	var textNode = document.createTextNode("항목 " + (count<10 ? "0"+count : count) + " : ");
+	divTag.appendChild(textNode);
+	// input 태그 만들고 div태그에 추가
+	var inputTag = document.createElement("input");
+	inputTag.type="text";
+	inputTag.name="item";
+	inputTag.size="62";
+	divTag.appendChild(inputTag);
+	// div태그를 filebox에 추가
+	document.getElementById("itembox").appendChild(divTag);
+}
+function removeFile(){
+	if(count==min){
+		alert('최소 ' + min + "개의 항목은 존재해야 합니다.");
+		return;
+	}
+	// 태그 제거
+	var removeTag = document.getElementById("item"+count);
+	document.getElementById("itembox").removeChild(removeTag);
+	--count;
+}
+</script>
+<style type="text/css">
+	table {
+		width: 550px; border: 1px solid gray; margin: auto;	padding: 5px;
+	}
+	.title {
+		background-color: black; color: white; text-align: center;
+		font-size: 15pt; font-weight: bold; padding: 5px;
+	}
+	.subject {
+		font-size: 12pt; font-weight: bold; padding: 5px;
+	}
+</style>
+</head>
+<body>
+	<form action="pollInsertOk.jsp" method="post">
+	<table>
+		<tr>
+			<td class="title">설문조사 등록 프로그램 Ver 1.0</td>
+		</tr>
+		<tr>
+			<td class="subject">
+				설문제목 : <input type="text" name="subject" id="subject" size="60" /> 
+			</td>
+		</tr>
+		<tr>
+			<td class="subject">
+				시작일 : <input type="date" name="startDate" id="startDate"/> 
+				종료일 : <input type="date" name="endDate" id="endDate"/> 
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<hr />
+				<input type="button" onclick="addFile()" value="항목추가">
+				<input type="button"  onclick="removeFile()" value="항목삭제">
+				<br /><hr />
+				<div id="itembox">
+					<div id="item1">
+						항목 01 : <input type="text" name="item" size="62"/>
+					</div>
+					<div id="item2">
+						항목 02 : <input type="text" name="item" size="62"/>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<input type="submit"  class="btn btn-outline-success btn-sm" value="등록하기" />
+				<input type="button" class="btn btn-outline-success btn-sm" value="목록으로" onclick="location.href='pollList.jsp'"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</body>
+</html>
+---------------------------------------------------------------------------------------------
+<%@page import="kr.green.poll.service.PollService"%>
+<%@page import="kr.green.poll.vo.PollVO"%>
+<%@page import="java.util.Arrays"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+// 한글을 받으려면 인코딩 타입 지정해 주어야 한다.
+request.setCharacterEncoding("UTF-8");
+
+// POST전송이 아니면 폼으로 다시 보내버린다. 
+// 이코드가 없으면 이파일을 직접 실행했을때 넘어오지 않은 데이터를 
+// 처리하기때문에 에러가 발생할 소지가 다분하다. 
+if(!request.getMethod().equals("POST")){
+	response.sendRedirect("pollList.jsp"); // 지정 페이지로 무조건 이동하라.
+	return; // 여기서 종료!!
+}
+// 넘어온 데이터를 받는다.
+String subject = request.getParameter("subject");
+String startDate = request.getParameter("startDate");
+String endDate = request.getParameter("endDate");
+String pollItems[] = request.getParameterValues("item");
+
+// 투표 항목 수와 동일한 숫자 배열을 만든다. 
+int   pollCounts[] = null;
+if(pollItems!=null && pollItems.length>0){
+	pollCounts = new int[pollItems.length];
+	// 각각의 데이터를 VO에 넣는다.
+	PollVO vo = new PollVO();
+	vo.setSubject(subject);
+	vo.setPollItems(pollItems);
+	vo.setPollCounts(pollCounts);
+	vo.setStartDate(startDate);
+	vo.setEndDate(endDate);
+	
+	// 서비스 클래스를 호출하여 DB에 저장한다.
+	PollService.getInstance().insert(vo);
+	
+	// 리스트로 간다.
+	response.sendRedirect("pollList.jsp");
+}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+	제목 : <%=subject %> <br />
+	시작일 : <%=startDate %> <br />
+	종료일 : <%=endDate %> <br />
+	항목 : <%=Arrays.toString(pollItems) %> <br />
+</body>
+</html>
+---------------------------------------------------------------------------------------------
+3) 투표하기 -- pollForm.jsp -> pollOk.jsp
+---------------------------------------------------------------------------------------------
+<%@page import="kr.green.poll.service.PollService"%>
+<%@page import="kr.green.poll.vo.PollVO"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	int idx = 0;
+	// 글번호가 제대로 넘어오지 않은 경우 처리
+	try{
+		idx = Integer.parseInt(request.getParameter("idx"));
+	}catch(Exception e){
+		response.sendRedirect("pollList.jsp");
+		return;
+	}
+	// 투표한개를 읽어와야 한다.
+	PollVO vo = PollService.getInstance().selectByIdx(idx);
+	if(vo==null){ // 해당 번호의 글이 없다면
+		response.sendRedirect("pollList.jsp");
+		return;
+	}
+	// 여기까지 왔다면 투표를 읽어오기 성공!!
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>투표 목록보기</title>
+<%-- 부트스트랩을 사용하기 위한 준비 시작 --%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩을 사용하기 위한 준비 끝 --%>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+	table {
+		width: 450px; border: 1px solid gray; margin: auto;	padding: 5px;
+	}
+	.title {
+		background-color: black; color: white; text-align: center;
+		font-size: 15pt; font-weight: bold; padding: 5px;
+	}
+	.subject {
+		font-size: 12pt; font-weight: bold; padding: 5px;
+	}
+</style>
+</head>
+<body>
+	<form action="pollOk.jsp" method="post">
+	<table>
+		<tr>
+			<td class="title">설문조사 프로그램 Ver 1.0</td>
+		</tr>
+		<tr>
+			<td class="subject">설문 : <%=vo.getSubject() %></td>
+		</tr>
+		<tr>
+			<td>
+				<%-- 글번호는 숨겨서 보낸다. --%>
+				<input type="hidden" name="idx" value="<%=vo.getIdx()%>">
+				<%
+					int i=0;
+					for(String item : vo.getPollItems()){
+				%>
+					<label> 
+						<input type="radio" value="<%=i++%>" name="poll" <%=(i==1) ? " checked='checked' " : "" %> >
+						<%=item %> 
+					</label>
+					<br />
+				<%						
+					}
+				%>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<input type="submit"  class="btn btn-outline-success btn-sm" value="투표하기" />
+				<input type="button" class="btn btn-outline-success btn-sm" value="결과보기" onclick="location.href='pollResult.jsp'"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</body>
+</html>
+---------------------------------------------------------------------------------------------
+<%@page import="kr.green.poll.service.PollService"%>
+<%@page import="java.io.PrintWriter"%>
+<%@page import="kr.green.poll.vo.PollVO"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="java.io.File"%>
+<%@page import="java.io.FileReader"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	// 한글을 받으려면 인코딩 타입 지정해 주어야 한다.
+	request.setCharacterEncoding("UTF-8");
+
+	// POST전송이 아니면 폼으로 다시 보내버린다. 
+	// 이코드가 없으면 이파일을 직접 실행했을때 넘어오지 않은 데이터를 
+	// 처리하기때문에 에러가 발생할 소지가 다분하다. 
+	if(!request.getMethod().equals("POST")){
+		response.sendRedirect("pollList.jsp"); // 지정 페이지로 무조건 이동하라.
+		return; // 여기서 종료!!
+	}
+
+	// 넘어온 값을 받아보자!!!
+	int poll = Integer.parseInt(request.getParameter("poll"));
+	int idx = Integer.parseInt(request.getParameter("idx"));
+	
+	// DB에서 글을 읽어와서 투표한 숫자를 바꿔서(1증가시켜) 다시 저장한다.
+	PollVO vo = PollService.getInstance().selectByIdx(idx);
+	int[] pollCounts = vo.getPollCounts(); // 투표수 배열읽기
+	pollCounts[poll]++; // 투표수 증가하기
+	vo.setPollCounts(pollCounts); // vo의 값을 갱신
+	
+	// DB을 수정해 주어야 한다.
+	PollService.getInstance().update(vo);
+	
+	// 4) 결과보기 화면으로 이동한다.
+	response.sendRedirect("pollResult.jsp?idx=" + vo.getIdx());
+%>
+
+---------------------------------------------------------------------------------------------
+4) 결과보기 -- pollResult.jsp
+---------------------------------------------------------------------------------------------
+<%@page import="kr.green.poll.service.PollService"%>
+<%@page import="kr.green.poll.vo.PollVO"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	// 결과를 보려면 투표 1개를 가져와야 한다.
+	int idx = 0;
+	// 글번호가 제대로 넘어오지 않은 경우 처리
+	try{
+		idx = Integer.parseInt(request.getParameter("idx"));
+	}catch(Exception e){
+		response.sendRedirect("pollList.jsp");
+		return;
+	}
+	PollVO vo = PollService.getInstance().selectByIdx(idx);
+	if(vo==null){ // 해당 번호의 글이 없다면
+		response.sendRedirect("pollList.jsp");
+		return;
+	}
+	// 여기까지 왔다면 투표를 읽어오기 성공!!
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>투표 결과보기</title>
+<%-- 부트스트랩을 사용하기 위한 준비 시작 --%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩을 사용하기 위한 준비 끝 --%>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+	table {
+		width: 450px; border: 1px solid gray; margin: auto;	padding: 5px;
+	}
+	.title {
+		background-color: black; color: white; text-align: center;
+		font-size: 15pt; font-weight: bold; padding: 5px;
+	}
+	.subject {
+		font-size: 12pt; font-weight: bold; padding: 5px;
+	}
+</style>
+</head>
+<body>
+	<table>
+		<tr>
+			<td class="title">설문조사 프로그램 Ver 1.0</td>
+		</tr>
+		<tr>
+			<td align="right">총 투표수 : <%=vo.getTotalCount() %>표</td>
+		</tr>
+		<tr>
+			<td class="subject">설문 : <%=vo.getSubject() %></td>
+		</tr>
+		<tr>
+			<td>
+				<%
+					String[] colors = "red,green,blue,pink,brown,skyblue".split(",");
+					String[] items = vo.getPollItems();
+					int[]    counts = vo.getPollCounts();
+					for(int i=0;i<items.length;i++){
+						out.print((i+1) + ". " + items[i] + "(" + counts[i] + "표, " + vo.getPercent(i) +"%)<br>");
+						out.print("<hr size='20' align='left' width='" + vo.getPercent(i)
+						          + "%' color='" + colors[i%colors.length] + "'/>");
+					}
+				%>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<input type="button" class="btn btn-outline-success btn-sm"  value="돌아가기" onclick="location.href='pollList.jsp'"/>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
+---------------------------------------------------------------------------------------------
