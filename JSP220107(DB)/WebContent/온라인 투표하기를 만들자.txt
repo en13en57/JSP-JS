@@ -5,8 +5,8 @@
    
 2. 어떤 모양으로 저장을 할까?
    제목 : subject  - varchar(100) - not null
-   항목 : 항목1|~|항목2	.... : item - text - not null
-   투표수 : 투표수1|~|투표수2.... : count - text - not null
+   항목 : 항목1@@항목2	.... : item - text - not null
+   투표수 : 투표수1@@투표수2.... : count - text - not null
    시작일 : startDate  - varchar(10) - not null   
    종료일 : endDate    - varchar(10) - not null 
    설명   : comment    - text
