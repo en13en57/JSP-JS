@@ -1,0 +1,447 @@
+1줄 메모장 만들기
+-----------------
+0. DBCP 셑팅을 끝낸다.
+
+1. 어디에 저장을 할까요? -- 마리아 디비에 저장을 하자
+2. 어떤것을 저장할까요?
+   글번호   - idx  - int - 키필드
+   작성자   - name - varchar
+   비밀번호 - password - varchar
+   내용     - content  - text
+   작성일   - regDate  - timestamp 
+   IP       - ip       - varchar
+   
+3. 테이블을 작성하자!!
+   create table memo (
+   		idx int primary key auto_increment,
+   		name varchar(30) not null,
+   		password varchar(30) not null,
+   		content  text not null,
+   		regDate  timestamp default now(),
+   		ip varchar(20) not null
+   );   
+
+4. 패키지 3개를 만든다.
+   kr.green.memo.vo   
+   kr.green.memo.dao   
+   kr.green.memo.service
+      
+5. kr.green.memo.vo에 테이블과 1:1 대응되는 MemoVO.java를 만든다.
+-------------------------------------------------------------------   
+package kr.green.memo.vo;
+
+import java.util.Date;
+import lombok.Data;
+
+@Data
+public class MemoVO {
+	private int idx;
+	private String name;
+	private String password;
+	private String content;
+	private Date   regDate;
+	private String ip;
+}
+-------------------------------------------------------------------   
+6. kr.green.memo.vo에 페이지 나누기 처리를 담당하는 PagingVO.java를 만든다.
+---------------------------------------------------------------------------   
+package kr.green.memo.vo;
+
+import java.util.List;
+
+public class PagingVO<T> {
+	// 아래 4개 변수는 넘겨 받는다.
+	private int currentPage; 	// 현재페이지
+	private int pageSize;		// 페이지당 글 수
+	private int blockSize;		// 하단 표시 페이지 개수
+	private int totalCount;		// 전체 글 개수
+	
+	// 다음 변수들은 계산해서 처리한다.
+	private int totalPage;		// 전체 페이지수
+	private int startNo;		// 시작 글번호
+	private int endNo;			// 끝 글번호 -- 마리아 디비에서는 사용않함. 오라클에서 사용
+	private int startPage;      // 하단 페이지 시작번호
+	private int endPage;        // 하단 페이지 끝번호
+	
+	// 실제 글을 담을 리스트
+	private List<T> list;
+
+	// 4개 변수는 생성자로 넘겨 받는다.
+	public PagingVO(int currentPage, int pageSize, int blockSize, int totalCount) {
+		this.currentPage = currentPage;
+		this.pageSize = pageSize;
+		this.blockSize = blockSize;
+		this.totalCount = totalCount;
+		// 나머지 변수는 계산한다.
+		calc();
+	}
+
+	// 나머지 변수는 계산한다.
+	private void calc() {
+		// 계산 전에 넘겨받은 값의 유효성을 검사하자!!!
+		if(currentPage<=0) currentPage = 1;
+		if(pageSize<=1) pageSize = 10;
+		if(blockSize<=1) blockSize = 10;
+		if(totalCount<0) totalCount = 0;
+		// 개수가 있을때만 계산을 하자
+		if(totalCount>0) {
+			// 전체 페이지수 = (전체개수-1)/페이지당글수
+			totalPage = (totalCount-1)/pageSize + 1;
+			// 현재 페이지가 전체 페이지수를 넘을 수 없다.
+			if(currentPage>totalPage) currentPage = 1;
+			// 시작번호 = (현재페이지-1)*페이지당글수
+			startNo = (currentPage-1) * pageSize; // 오라클은 +1을 한다. 왜? 인덱스가 1부터이다.
+			// 끝번호 = 시작번호 + 페이지당글수 - 1
+			endNo = startNo + pageSize - 1; 
+			// 마지막 번호는 전체 개수보다 클 수 없다.
+			if(endNo>=totalCount) endNo = totalCount -1; // 오라클은 -1을 하지 않는다. 조건에 등호가 없다.
+			// 시작 페이지번호 = (현재 페이지번호-1)/페이지개수 * 페이지 개수 + 1
+			startPage = (currentPage-1)/blockSize * blockSize + 1;
+			// 끝페이지 번호 = 시작페이지번호 + 페이지개수 -1
+			endPage = startPage + blockSize -1;
+			// 끝 페이지 번호는 전체 페이지수를 넘을 수 없다.
+			if(endPage>totalPage) endPage = totalPage;
+		}
+	}
+
+	public List<T> getList() {
+		return list;
+	}
+
+	public void setList(List<T> list) {
+		this.list = list;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public int getBlockSize() {
+		return blockSize;
+	}
+
+	public int getTotalCount() {
+		return totalCount;
+	}
+
+	public int getTotalPage() {
+		return totalPage;
+	}
+
+	public int getStartNo() {
+		return startNo;
+	}
+
+	public int getEndNo() {
+		return endNo;
+	}
+
+	public int getStartPage() {
+		return startPage;
+	}
+
+	public int getEndPage() {
+		return endPage;
+	}
+
+	@Override
+	public String toString() {
+		return "PagingVO [currentPage=" + currentPage + ", pageSize=" + pageSize + ", blockSize=" + blockSize
+				+ ", totalCount=" + totalCount + ", totalPage=" + totalPage + ", startNo=" + startNo + ", endNo="
+				+ endNo + ", startPage=" + startPage + ", endPage=" + endPage + ", list=" + list + "]";
+	}
+	
+	// 페이지 상단에 표시할 메서드를 추가하자
+	public String getPageInfo() {
+		return "전체 : " + totalCount + "개(" + currentPage + "/" + totalPage + "Page)";
+	}
+	// 페이지 하단에 표시할 메서드를 추가하자!!!
+	public String getPageList() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<ul class='pagination pagination-sm'>");
+		// "이전"은 시작페이지 번호가 1보다 크다면 있다.
+		if(startPage>1) {
+			sb.append("<li class='page-item'>");
+			sb.append("<a class='page-link' href='?p=" +(startPage-1)+ "&s="+pageSize+"&b="+blockSize+"' aria-label='Previous'>");
+			sb.append("<span aria-hidden='true'>&laquo;</span>");
+			sb.append("</a>");
+			sb.append("</li>");
+		}
+		// 페이지 번호들을 출력해준다.
+		for(int i=startPage;i<=endPage;i++) {
+			if(i!=currentPage) { // 현재 페이지가 아니면 링크를 걸고
+				sb.append("<li class='page-item'><a class='page-link' href='?p=" +(i)+ "&s=" + pageSize + "&b=" + blockSize + "'>" + i + "</a></li>");
+			}else { // 현재 페이지는 링크를 걸지 않는다.
+				sb.append("<li class='page-item active' aria-current='page'><a class='page-link' href='#'>" + i + "</a></li>");
+			}
+		}
+		// "다음"은 끝 페이지번호가 전체 페이지 번호보다 적다면 있다.
+		if(endPage<totalPage) {
+			sb.append("<li class='page-item'>");
+			sb.append("<a class='page-link' href='?p=" +(endPage+1)+ "&s="+pageSize+"&b="+blockSize+"' aria-label='Previous'>");
+			sb.append("<span aria-hidden='true'>&raquo;</span>");
+			sb.append("</a>");
+			sb.append("</li>");
+		}
+		sb.append("</ul>");
+		return sb.toString();
+	}
+}
+------------------------------------------------------------------------------------   
+ 7. DB의  SQL명령을 처리하는 DAO클래스를 만들자. -- kr.green.memo.dao.MemoDAO.java  
+------------------------------------------------------------------------------------   
+package kr.green.memo.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import kr.green.jdbc.JDBCUtil;
+import kr.green.memo.vo.MemoVO;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+public class MemoDAO {
+	//---------------------------------------------------------
+	// 싱글톤 클래스로 만들자
+	private static MemoDAO instance = new MemoDAO();
+	private MemoDAO() {}
+	public static MemoDAO getInstance() {
+		return instance;
+	}
+	//---------------------------------------------------------
+	// 1. SQL명령어 1개당 1개의 메서드로 만든다.
+	// 2. 첫번째 인수는 무조건 Connection이다. 왜? 트랜젝션 처리를 위해서!!!
+	
+	// 1) 전체 개수 세기를 위한 메서드 -- 목록보기에서 페이지 계산에 필요
+	public int selectCount(Connection conn) throws SQLException {
+		log.debug("MemoDAO.selectCount 호출");
+		int totalCount = 0;
+		String sql = "select count(*) from memo";
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		rs.next();
+		totalCount = rs.getInt(1);
+		JDBCUtil.close(rs);
+		JDBCUtil.close(stmt);
+		log.debug("MemoDAO.selectCount 리턴값 : " + totalCount);
+		return totalCount;
+	}
+	
+	// 2) 한페이지 분량의 글을 얻어오는 메서드 -- 1페이지 목록 출력에 필요
+	public List<MemoVO> selectList(Connection conn, int startNo,int pageSize) throws SQLException{
+		log.debug("MemoDAO.selectList 호출 : 인수 - " + startNo + ", " + pageSize );
+		List<MemoVO> list = null;
+		String sql = "select * from memo order by idx desc limit ?,?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, startNo);
+		pstmt.setInt(2, pageSize);
+		ResultSet rs = pstmt.executeQuery();
+		if(rs.next()) {
+			list = new ArrayList<MemoVO>(); // 내용이 있으면 객체 생성
+			do {
+				MemoVO memoVO = new MemoVO();
+				// VO를 채운다.
+				memoVO.setIdx(rs.getInt("idx"));
+				memoVO.setName(rs.getString("name"));
+				memoVO.setPassword(rs.getString("password"));
+				memoVO.setContent(rs.getString("content"));
+				memoVO.setRegDate(rs.getDate("regDate"));
+				memoVO.setIp(rs.getString("ip"));
+				// VO를 리스트에 추가한다.
+				list.add(memoVO);
+			}while(rs.next());
+		}
+		log.debug("MemoDAO.selectList 리턴값 : " + list);
+		return list;
+	}
+	
+	
+	// 3) 1개의 글을 읽어오는 메서드 -- 수정/삭제에 필요
+	
+	// 4) 1개의 글을 저장하는 메서드
+
+	// 5) 1개의 글을 수정하는 메서드
+	
+	// 6) 1개의 글을 삭제하는 메서드
+	
+}
+
+------------------------------------------------------------------------------------   
+ 8. 비지니스 로직을 처리하는 Service클래스를 만들자. -- kr.green.memo.service.MemoService.java  
+------------------------------------------------------------------------------------   
+package kr.green.memo.service;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.green.jdbc.JDBCUtil;
+import kr.green.memo.dao.MemoDAO;
+import kr.green.memo.vo.MemoVO;
+import kr.green.memo.vo.PagingVO;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+public class MemoService {
+	// ---------------------------------------------------------
+	// 싱글톤 클래스로 만들자
+	private static MemoService instance = new MemoService();
+	private MemoService() {}
+	public static MemoService getInstance() {
+		return instance;
+	}
+	// ---------------------------------------------------------
+	// 1. 목록보기
+	public PagingVO<MemoVO> selectList(int currentPage, int pageSize, int blockSize){
+		log.debug("MemoService.selectList 호출 인수 : " + currentPage + ", " + pageSize + ", "+ blockSize);
+		PagingVO<MemoVO> pagingVO = null;
+		List<MemoVO> list = null;
+		Connection conn = null;
+		MemoDAO dao = MemoDAO.getInstance();
+		try {
+			conn = JDBCUtil.getConnection();
+			conn.setAutoCommit(false);
+			//-----------------------------------------------------------------------------
+			int totalCount = dao.selectCount(conn);
+			pagingVO = new PagingVO<MemoVO>(currentPage, pageSize, blockSize, totalCount);
+			list = dao.selectList(conn, pagingVO.getStartNo(), pagingVO.getPageSize());
+			pagingVO.setList(list);
+			//-----------------------------------------------------------------------------
+			conn.commit();
+		}catch (SQLException e) {
+			JDBCUtil.rollback(conn);
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn);
+		}
+		log.debug("MemoService.selectList 리턴 : " + pagingVO);
+		return pagingVO;
+	}
+	// 2. 1개 얻기
+	// 3. 저장하기
+	// 4. 수정하기
+	// 5. 삭제하기
+}
+------------------------------------------------------------------------------------   
+9. 메모장 목록을 출력해보자 --- memoList.jsp
+------------------------------------------------------------------------------------
+include.jsp
+------------------------------------------------------------------------------------
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	//현재 페이지 번호를 받자
+int currentPage = 1;
+try {
+	currentPage = Integer.parseInt(request.getParameter("p"));
+} catch (Exception e) {
+	;
+}
+//페이지당 글 수의 개수를 받자
+int pageSize = 10;
+try {
+	pageSize = Integer.parseInt(request.getParameter("s"));
+} catch (Exception e) {
+	;
+}
+//페이지 리스트 개수를 받자
+int blockSize = 10;
+try {
+	blockSize = Integer.parseInt(request.getParameter("b"));
+} catch (Exception e) {
+	;
+}
+%>   
+------------------------------------------------------------------------------------   
+memoList.jsp
+------------------------------------------------------------------------------------   
+<%@page import="kr.green.memo.service.MemoService"%>
+<%@page import="kr.green.memo.vo.MemoVO"%>
+<%@page import="kr.green.memo.vo.PagingVO"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- 자주 코딩하는 코드가 있다면 별도로 만들어 놓고 필요시 include하면 편리하다. --%>
+<%@ include file="include.jsp" %>
+<%
+	// 페이지 정보를 얻어오자!!!
+	PagingVO<MemoVO> pagingVO = MemoService.getInstance().selectList(currentPage, pageSize, blockSize);
+	request.setAttribute("pv", pagingVO); // EL로 출력하기 위해서는 영역에 저장되어야 한다.
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>1줄 메모장 프로그램</title>
+<%-- 부트스트랩을 사용하기 위한 준비 시작 --%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<%-- 부트스트랩을 사용하기 위한 준비 끝 --%>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+	table {padding:5px; width: 900px; margin: auto;}
+	th { border: 1px solid gray; background-color: silver; padding:5px;text-align: center;}
+	td { border: 1px solid gray; padding:5px;text-align: center;}
+	.title{font-size: 18pt; text-align: center;border: none;}
+	.sub_title{text-align: right;border: none;}
+</style>
+</head>
+<body>
+	<table>
+		<tr>
+			<td colspan="5" class="title">1줄 메모장 Ver 0.09</td>
+		</tr>
+		<tr>
+			<td colspan="5" class="sub_title">${pv.pageInfo }</td>
+		</tr>
+		<tr>
+			<th>No</th>
+			<th>작성자</th>
+			<th width="60%">내용</th>
+			<th>작성일</th>
+			<th>IP</th>
+		</tr>
+		<% 
+			if(pagingVO.getTotalCount()==0){
+		%>
+		<tr>
+			<td colspan="5" style="text-align: center;">등록된 글이 없습니다.</td>
+		</tr>
+		<%						
+			}else{
+				for(MemoVO vo : pagingVO.getList()){
+		%>
+			<tr>
+				<td><%=vo.getIdx() %></td>
+				<td><%=vo.getName() %></td>
+				<td style="text-align: left;"><%=vo.getContent() %></td>
+				<td><%=vo.getRegDate() %></td>
+				<td><%=vo.getIp() %></td>
+			</tr>
+		<%		
+				}
+		%>
+			<tr>
+				<td colspan="5" style="text-align: center;border: none;">${pv.pageList }</td>
+			</tr>
+		<%		
+			}
+		%>
+		
+	</table>
+</body>
+</html>
+------------------------------------------------------------------------------------   
+

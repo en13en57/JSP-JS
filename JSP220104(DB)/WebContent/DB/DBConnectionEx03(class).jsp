@@ -1,4 +1,4 @@
-<%@page import="kr.green.jdbc.DBCPUtil"%>
+<%@page import="kr.green.jdbc.JDBCUtil"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.ResultSet"%>
@@ -16,7 +16,7 @@
 	String password = "123456";
 	try{
 		// 3. 연결한다.
-		conn = DBCPUtil.getConnection(className, url, user, password);
+		conn = JDBCUtil.getConnection(className, url, user, password);
 		out.println("연결 성공 : " + conn + "<br>");
 		// 4. 사용한다
 		stmt = conn.createStatement();
@@ -46,8 +46,8 @@
 		;
 	}finally{
 		// 5. 닫는다
-		DBCPUtil.close(rs);
-		DBCPUtil.close(stmt);
-		DBCPUtil.close(conn);
+		JDBCUtil.close(rs);
+		JDBCUtil.close(stmt);
+		JDBCUtil.close(conn);
 	}
 %>

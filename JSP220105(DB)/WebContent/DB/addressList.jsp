@@ -22,7 +22,7 @@
 	// 데이터가 있다면 리스트 객체를 만든다.
 	list = new ArrayList<>();
 	do{
-		// 레코드 1개강 VO객체 1개
+		// 레코드 1개당 VO객체 1개
 		AddressVO vo = new AddressVO();
 		vo.setIdx(rs.getInt("idx"));
 		vo.setName(rs.getString("name"));
