@@ -28,7 +28,7 @@
 				$("#contentBox").show('slow');
 			}else{
 				$(this).html("내용보기");
-				$("#contentBox").hide('fast');
+				$("#contentBox").hide('slow');
 			}
 		});
 		
