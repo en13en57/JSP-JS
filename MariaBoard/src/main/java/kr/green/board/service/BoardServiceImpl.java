@@ -17,7 +17,7 @@ public class BoardServiceImpl implements BoardService{
 		return instance;
 	}
 	//---------------------------------------------------------------------------------
-	// 1페이지 선택
+	// 목록보기
 	@Override
 	public PagingVO<BoardVO> selectList(int currentPage, int pageSize, int blockSize) {
 		// 1. 리턴 타입의 변수를 만든다.
