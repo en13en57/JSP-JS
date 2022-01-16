@@ -15,6 +15,6 @@ select * from board;
 
 -- 샘플 데이터 넣어보자
 insert into board
-(user,password,subject,content,ip)
+(name,password,subject,content,ip)
 values
 ('주인장', password('1234'), '자유게시판 입니다', '내용입니다.', '192.168.123.234');

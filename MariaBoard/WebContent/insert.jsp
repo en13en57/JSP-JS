@@ -20,28 +20,28 @@
 	function formCheck(){
 		var obj = $("#user");
 		if(obj.val()==null || obj.val().trim().length==0){
-			alert("이름은 반듯이 입력되야 합니다.")
+			alert("이름은 반드시 입력되야 합니다.")
 			obj.val("");
 			obj.focus();
 			return false;
 		}
 		var obj = $("#password");
 		if(obj.val()==null || obj.val().trim().length==0){
-			alert("비밀번호는 반듯이 입력되야 합니다.")
+			alert("비밀번호는 반드시 입력되야 합니다.")
 			obj.val("");
 			obj.focus();
 			return false;
 		}
 		var obj = $("#subject");
 		if(obj.val()==null || obj.val().trim().length==0){
-			alert("제목은 반듯이 입력되야 합니다.")
+			alert("제목은 반드시 입력되야 합니다.")
 			obj.val("");
 			obj.focus();
 			return false;
 		}
 		var obj = $("#content");
 		if(obj.val()==null || obj.val().trim().length==0){
-			alert("내용은 반듯이 입력되야 합니다.")
+			alert("내용은 반드시 입력되야 합니다.")
 			obj.val("");
 			obj.focus();
 			return false;
