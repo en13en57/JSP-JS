@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="memo">
+	<!--  
+	태그 1개가 메서드 1개라고 보시면 됩니다. 
+	id : 메서드명
+	parameterClass : 매개변수타입
+	resultClass    : 리턴 타입
+	<![CDATA[ ]]>  : CDATA섹션인데 SQL명령에 
+	                 >, >= , < , <= 등이 들어갔을때 태그가 아니라고 알려주는것이다. 
+	                 
+	SQL 명령중 바뀌는 부분의 ##으로 감싸준다. 그러면 변수의 값을 ''안에 써서 완성해 준다.
+	만약 바뀌는 부분이 필드명이나 테이블명이면 ''가 없어야 하므로 $$로 감싸준다.
+	-->
+	<select id="selectCount" resultClass="int">
+		select count(*) from memo
+	</select>
+	
+	<select id="selectList" resultClass="memoVO" parameterClass="hashMap">
+		select * from memo order by idx desc limit #startNo#, #pageSize#
+	</select>
+	
+	<select id="selectByIdx" resultClass="memoVO" parameterClass="int">
+		select * from memo where idx=#idx#
+	</select>
+	
+	<insert id="insert" parameterClass="memoVO">
+		insert into memo 
+		(name,password,content,regDate,ip) 
+		values 
+		(#name#,#password#,#content#,now(),#ip#)
+	</insert>
+	
+	<update id="update" parameterClass="memoVO">
+		update memo set content=#content#, regDate=now(), ip=#ip# where idx=#idx#
+	</update>
+	
+	<delete id="delete" parameterClass="int">
+		delete from memo where idx=#idx#
+	</delete>
+	
+</sqlMap>
