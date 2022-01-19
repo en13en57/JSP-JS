@@ -61,7 +61,7 @@
 			      <td>조회수</td>
 			      <td>IP</td>
 			    </tr>
-			    	<c:if test="${pv.totalCount==0}">
+			    	<c:if test="${pv.totalCount==0 }">
 			    		<tr>
 			    			<td scope='row' colspan='6' align='center'>등록된 글이 없습니다. </td>
 			    		</tr>
@@ -79,9 +79,13 @@
 			    					<a href="#" onclick='sendPost("view.jsp",{"p" : ${p },"s" : ${s },"b" : ${b },"idx" : ${vo.idx},"h" : 1})'>
 			    					<c:out value="${vo.subject }"/>
 			    					</a>
+			    					<%-- 댓글의 개수 출력 --%>
+			    					<c:if test="vo.commentCount>0">
+			    						-(${vo.commentCount })
+			    					</c:if>
 			    				</td>
 			    				<td>
-			    					<c:out value="${vo.subject }"/>
+			    					<c:out value="${vo.name }"/>
 			    				</td>
 			    				<td>
 			    					<fmt:formatDate value="${vo.regDate }" pattern="yy-MM-dd"/>
@@ -96,6 +100,42 @@
 			    			</td>
 			    		</tr>
 			    	</c:if>
+			   <%-- 
+			   	  <tr>
+			      <th style="border: none;"><%=vo.getIdx() %></th>
+			      <td style="text-align: left;">
+					  <%
+						// 태그 사용 금지, 20자 이상 막기
+						String subject = vo.getSubject();
+						subject = subject.replaceAll("<", "&lt;");
+						if(subject.length()>=20){
+							subject = subject.substring(0, 20) + "....";
+						  }
+				  	  %>
+					  <a title="<%=vo.getSubject() %>" href="view.jsp?p=${pv.currentPage }&s=${pv.pageSize }&b=${pv.blockSize }&idx=<%=vo.getIdx() %>&h=1"><%=subject %></a>
+			   	  </td>
+			      <td>
+						<%
+							// 태그 사용 금지
+							String name = vo.getName();
+							name = name.replaceAll("<", "&lt;");
+							out.println(name);
+						%>
+						</td>
+						<td>
+						<%
+						SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd hh:mm");
+						out.println(sdf.format(vo.getRegDate())); 
+						%>
+				  </td>
+			      <td><%=vo.getHit() %></td>
+			      <td><%=vo.getIp() %></td>
+			      </tr>
+				      <%
+			       		}
+			    	}
+				      %>
+			   --%>
 		</tbody>
 	</table>
 </body>

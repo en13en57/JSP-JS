@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SQL 명령어 -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<!-- 1. 개수 세기 -->
+	<select id="selectCount" resultType="int">
+		select count(*) from board3
+	</select>
+	<!-- 2. 개수 얻기 -->
+	<select id="selectByIdx" parameterType="int" resultType="BoardVO">
+		select * from board3 where idx=#{idx}
+	</select>
+	<!-- 3. 1페이지 얻기 -->
+	<select id="selectList" parameterType="hashmap" resultType="BoardVO">
+		select * from board3 order by idx desc limit #{startNo},#{pageSize}
+	</select>
+	<!-- 4. 저장 -->
+	<insert id="insert" parameterType="BoardVO">
+		insert into board3
+			(name,password,subject,content,ip)
+		values
+			(#{name},password(#{password}),#{subject},#{content},#{ip})
+	</insert>
+	<!-- 5. 수정 -->
+	<update id="update" parameterType="BoardVO">
+		update board3
+		set
+			subject = #{subject},
+			content = #{content},
+			regDate = now(),
+			ip 		= #{ip}
+		where 
+			idx = #{idx}
+	</update>
+	<!-- 6. 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from board3 where idx=#{idx}
+	</delete>
+	<!-- 7. 조회수 증가 -->
+	<update id="hitIncrement" parameterType="int">
+		update board3 set hit = hit+1 where idx=#{idx}
+	</update>
+	<!-- 8. 비번감사 -->
+	<select id="passwordCheck" parameterType="hashmap" resultType="int">
+		select count(*) from board3 where idx=#{idx} and password=password(#{password})
+	</select>
+	
+</mapper>

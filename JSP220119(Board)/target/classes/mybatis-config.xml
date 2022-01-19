@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 프로퍼티 파일 사용하겠다. -->
+	<properties resource="db.properties"></properties>
+
+	<!-- 긴 클래스 이름을 줄여서 사용하기 위해 별명을 등록한다. -->
+	<!-- vo 생성시마다 추가 -->
+	<!-- 
+	 -->
+	<typeAliases>
+		<typeAlias type="kr.green.board.vo.BoardVO" alias="BoardVO"/>
+		<typeAlias type="kr.green.board.vo.CommentVO" alias="CommentVO"/>
+	</typeAliases>
+
+	<environments default="development">
+		<environment id="development">
+			<!-- 트랜젝션은 JDBC API를 사용하겠다. -->
+			<transactionManager type="JDBC" />
+			<!-- DB 연결 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${m.driver}" />
+				<property name="url" value="${m.url}" />
+				<property name="username" value="${m.username}" />
+				<property name="password" value="${m.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<!-- 실행할 SQL명령어들이 들어 있는 XML파일 지정 -->
+	<!-- mapper 생성시마다 추가 -->
+	<mappers>
+		<mapper resource="mapper/testMapper.xml" />
+		<mapper resource="mapper/boardMapper.xml" />
+		<mapper resource="mapper/commentMapper.xml" />
+	</mappers>
+</configuration>
