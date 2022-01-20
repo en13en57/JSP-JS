@@ -10,15 +10,15 @@ public interface BoardService {
 	// 2. 내용보기 -- 댓글목록
 	BoardVO selectByIdx(int idx, boolean isHit);
 	// 3. 저장하기
-	void insert(BoardVO boardvo);
+	void insert(BoardVO boardVO);
 	// 4. 수정하기
-	void update(BoardVO boardvo);
+	void update(BoardVO boardVO);
 	// 5. 삭제하기
-	void delete(BoardVO boardvo);
+	void delete(BoardVO boardVO);
 	// 6. 댓글 쓰기
-	void commentInsert(CommentVO commentvo);
+	void commentInsert(CommentVO commentVO);
 	// 7. 댓글 수정
-	void commentUpdate(CommentVO commentvo);
+	void commentUpdate(CommentVO commentVO);
 	// 8. 댓글 삭제
-	void commentDelete(CommentVO commentvo);
+	void commentDelete(CommentVO commentVO);
 }

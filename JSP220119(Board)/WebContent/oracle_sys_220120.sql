@@ -5,7 +5,7 @@ select dbms_xdb.gethttpport as "HTTP-Port" from dual;
 -- 2) 현재 웹 포트 번호 변경하기
 --    아래 세줄을 블록으로 감싸고, Ctrl + Enter치면 된다.
 begin
-dbms_xdb.sethttpport('22222');
+dbms_xdb.sethttpport('8081');
 end;
 
 select dbms_xdb.gethttpport as "HTTP-Port" from dual;
