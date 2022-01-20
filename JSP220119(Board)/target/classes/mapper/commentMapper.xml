@@ -11,7 +11,7 @@
 	</select>
 	<!-- 2. (?)글의 댓글 목록 -->
 	<select id="selectList" parameterType="int" resultType="CommentVO">
-		select * from comment where ref = #{idx}	
+		select * from comment where ref = #{idx} order by idx desc
 	</select>
 	<!-- 3. 저장 -->
 	<insert id="insert" parameterType="CommentVO" >
@@ -38,7 +38,7 @@
 		delete from comment where ref=#{ref}
 	</delete>
 	<!-- 7. 비밀번호 검사 -->
-	<select id="password" parameterType="hashmap" resultType="int">
+	<select id="passwordCheck" parameterType="hashmap" resultType="int">
 		select count(*) from comment where idx=#{idx} and password = password(#{password})
 	</select>
 	

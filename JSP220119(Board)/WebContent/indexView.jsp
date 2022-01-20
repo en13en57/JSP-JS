@@ -54,7 +54,7 @@
 		</thead>		    
 		<tbody>
 			    <tr>
-			      <th style="border: none;">No</th>
+			      <th style="border: none; text-align: center">No</th>
 			      <td width="40%">제목</td>
 			      <td>작성자</td>
 			      <td>작성일</td>
@@ -80,8 +80,8 @@
 			    					<c:out value="${vo.subject }"/>
 			    					</a>
 			    					<%-- 댓글의 개수 출력 --%>
-			    					<c:if test="vo.commentCount>0">
-			    						-(${vo.commentCount })
+			    					<c:if test="${vo.commentCount>0 }">
+			    						- (${vo.commentCount })
 			    					</c:if>
 			    				</td>
 			    				<td>

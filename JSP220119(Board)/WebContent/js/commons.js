@@ -18,3 +18,17 @@ function sendPost(url, params) {
     document.body.appendChild(form);
     form.submit();   // 전송~
 }
+
+// 문자열 모두 바꾸기 : (원본, 찾은 문자열, 바꿀문자열) 
+
+function replaceAll(str, searchStr, replaceStr) {
+
+   return str.split(searchStr).join(replaceStr);
+}
+// 이메일 검증하는 함수
+function verifyEmail() { // 이메일 검증 스크립트 작성 
+	var emailVal = $("#email").val(); 
+	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	 // 검증에 사용할 정규식 변수 regExp에 저장 
+	return (emailVal.match(regExp) != null); 
+}

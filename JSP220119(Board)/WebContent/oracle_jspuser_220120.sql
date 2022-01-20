@@ -1,0 +1,3 @@
+SELECT * FROM tab;
+
+SELECT SYSDATE FROM dual;
