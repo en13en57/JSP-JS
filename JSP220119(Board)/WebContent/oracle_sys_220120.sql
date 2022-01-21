@@ -38,3 +38,5 @@ CREATE USER oracleuser IDENTIFIED BY "123456";
 GRANT connect, resource TO oracleuser;
 
 
+
+
