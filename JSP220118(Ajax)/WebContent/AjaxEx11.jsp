@@ -7,7 +7,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		// 입력난에 숫자를 입력하면 자동으로 아래 DIV창에 천자문에서 그 데이터를 받아 출력하는 
+		// 입력란에 숫자를 입력하면 자동으로 아래 DIV창에 천자문에서 그 데이터를 받아 출력하는 
 		// 프로그램을 작성하시오!!!
 		$("#idx").change(function() {
 			//alert($(this).val());

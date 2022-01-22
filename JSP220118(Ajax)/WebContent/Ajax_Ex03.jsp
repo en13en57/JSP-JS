@@ -16,7 +16,7 @@
 					// 결과받기
 					alert(typeof(req.responseXML));
 					$("#box").text(req.responseText);
-				}esle{
+				}else{
 					alert("에러다!!!!");
 				}
 			}
