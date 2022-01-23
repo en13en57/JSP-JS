@@ -1,5 +1,4 @@
-drop table memo;
-show tables;
+
    create table memo (
    		idx int primary key auto_increment,
    		name varchar(30) not null,

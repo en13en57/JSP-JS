@@ -47,6 +47,7 @@ public class MemoService {
 		return pagingVO;
 	}
 	// 2. 1개 얻기
+	
 	// 3. 저장하기
 	public void insert(MemoVO vo) {
 		log.debug("MemoService.insert 호출 인수 : " + vo);	

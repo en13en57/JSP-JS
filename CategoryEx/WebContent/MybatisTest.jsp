@@ -17,7 +17,7 @@
 	<%
 		SqlSession sqlSession = MybatisApp.getSqlSessionFactory().openSession();
 		out.println("마리아 마이바티스 연동 : " + sqlSession + "<br>");
-		out.println("마리라 날짜 : " + sqlSession.selectOne("test.now")  + "<br>");
+		out.println("마리아 날짜 : " + sqlSession.selectOne("test.now")  + "<br>");
 		sqlSession.close();
 	%>
 </body>
