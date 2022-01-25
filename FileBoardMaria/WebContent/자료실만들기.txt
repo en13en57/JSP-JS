@@ -1,0 +1,42 @@
+자료실 만들기
+-----------------------
+1. 어디에 저장할까? ---- MariaDB
+
+2. 무엇을 저장할까?
+	이름, 비번, 제목, 내용 ,날짜 ip, 첨부파일 ....
+
+3. 어떻게 저장할까?
+	원본글 저장 : fileBoard
+	키필드 --- idx      --- int
+	이름   --- name     --- varchar
+	비번   --- password --- varchar
+	제목   --- subject  --- varchar
+	내용   --- content  --- text
+	작성일 --- regDate  --- timestamp
+	아이피 --- ip       --- varchar
+	
+	첨부파일 저장 : boardFile
+	키필드      --- idx --- int
+	참조        --- ref --- int
+	원본 파일명 --- oriName  --- varchar
+	저장 파일명 --- saveName --- varchar
+
+4. 테이블을 만들자
+	create table boardFile(
+		idx int primary key auto_increment,
+		name varchar(50) not null,
+		password varchar(50) not null,
+		subject varchar(100) not null,
+		content text not null,
+		regDate timestamp default now(),
+		ip varchar(15) not null
+	);
+
+	create table fileBoard(
+		idx int primary key auto_increment,
+		ref int not null,
+		oriName varchar(100) not null,
+		saveName varchar(100) not null,
+	);
+	
+	
