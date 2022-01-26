@@ -1,4 +1,4 @@
-package kr.green.file.mybatis;
+package kr.green.mybatis;
 
 import java.io.IOException;
 import java.io.InputStream;

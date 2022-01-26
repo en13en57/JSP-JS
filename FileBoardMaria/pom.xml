@@ -176,5 +176,19 @@
 			<version>1.4</version>
 		</dependency>
 		<!-- 자바 이메일 추가 종료 -->
+		<!-- 파일 업로드 추가 시작 -->
+		<!-- commons-fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- cos업로드 -->
+		<dependency>
+			<groupId>com.servlets</groupId>
+			<artifactId>cos</artifactId>
+			<version>05Nov2002</version>
+		</dependency>
+		<!-- 파일 업로드 추가 종료 -->
 	</dependencies>
 </project>

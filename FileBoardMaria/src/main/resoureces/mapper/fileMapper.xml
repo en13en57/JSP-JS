@@ -1,38 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- SQL 명령어 -->
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="file">
-	<!--  
-	태그 1개가 메서드 1개라고 보시면 됩니다. 
-	id : 메서드명
-	parameterType  : 매개변수타입
-	resultCType    : 리턴 타입
-	<![CDATA[ ]]>  : CDATA섹션인데 SQL명령에 
-	                 >, >= , < , <= 등이 들어갔을때 태그가 아니라고 알려주는것이다. 
-	                 
-	SQL 명령중 바뀌는 부분의 #{}으로 감싸준다. 그러면 변수의 값을 ''안에 써서 완성해 준다.
-	만약 바뀌는 부분이 필드명이나 테이블명이면 ''가 없어야 하므로 ${}로 감싸준다.
-	-->
-	
 	<!-- 1. 해당 ref의 첨부파일 목록 가져오기 -->
-		<select id="selectByRef" parameterType="int" resultType="BoardFileVO">
-			select * from boardfile where ref=#{ref}
-		</select>
+	<select id="selectByRef" parameterType="int" resultType="BoardFileVO">
+		select * from boardfile where ref=#{ref}
+	</select>
 	<!-- 2. 저장 -->
-		<insert id="insert" parameterType="BoardFileVO">
-			insert into boardfile
-				(ref, oriName, saveName)
-			values
-				(#{ref}, #{oriName}, #{saveName})			
-		</insert>
+	<insert id="insert" parameterType="BoardFileVO">
+		insert into boardfile
+		(ref,oriName,saveName)
+		values
+		(#{ref},#{oriName},#{saveName})
+	</insert>
 	<!-- 3. 삭제 -->
-		<delete id="delete" parameterType="int">
-			delete from boardfile where idx=#{idx}
-		</delete>
-	
-	
-	
+	<delete id="delete" parameterType="int">
+		delete from boardfile where idx=#{idx}
+	</delete>
+	<!-- 4. 1개 얻기 -->
+	<select id="selectByIdx" parameterType="int" resultType="BoardFileVO">
+		select * from boardfile where idx=#{idx}
+	</select>
 </mapper>

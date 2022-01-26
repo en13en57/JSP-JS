@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- SQL 명령어 -->
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-	<!--  
-	태그 1개가 메서드 1개라고 보시면 됩니다. 
-	id : 메서드명
-	parameterType  : 매개변수타입
-	resultCType    : 리턴 타입
-	<![CDATA[ ]]>  : CDATA섹션인데 SQL명령에 
-	                 >, >= , < , <= 등이 들어갔을때 태그가 아니라고 알려주는것이다. 
-	                 
-	SQL 명령중 바뀌는 부분의 #{}으로 감싸준다. 그러면 변수의 값을 ''안에 써서 완성해 준다.
-	만약 바뀌는 부분이 필드명이나 테이블명이면 ''가 없어야 하므로 ${}로 감싸준다.
-	-->
-	<!-- 1. 전체 개수세기 -->
-	<select id="selectCount" resultType="int" >
+	<!-- 1. 전체 개수 세기 -->
+	<select id="selectCount" resultType="int">
 		select count(*) from fileboard
 	</select>
 	
@@ -28,36 +15,35 @@
 	
 	<!-- 3. 1페이지 얻기 -->
 	<select id="selectList" parameterType="hashmap" resultType="FileBoardVO">
-		select * from fileboard order by idx desc limit #{startNo},#{pageSize} 
+		select * from fileboard order by idx desc limit #{startNo}, #{pageSize}
 	</select>
 	
 	<!-- 4. 저장 -->
-	<insert id="insert" parameterType="FileBoardVO" >
+	<insert id="insert" parameterType="FileBoardVO">
 		insert into fileboard
-			(name, password, subject, content, ip)
+		(name,password,subject,content,ip)
 		values
-			(#{name}, #{password}, #{subject}, #{content}, #{ip})	
+		(#{name},#{password},#{subject},#{content},#{ip})
 	</insert>
 	<!-- 5. 수정 -->
 	<update id="update" parameterType="FileBoardVO">
-		update fileboard 
+		update fileboard
 		set
-			subject=#{subject}, 
-			content=#{content}, 
-			regDate = now(), 
-			ip = #{ip} 
-		where 
-			idx=#{idx} 	
+			subject=#{subject},
+			content=#{content},
+			regdate=now(),
+			ip = #{ip}
+		where
+			idx=#{idx}
 	</update>
 	<!-- 6. 삭제 -->
 	<delete id="delete" parameterType="int">
-	  delete from filboard where idx=#{idx}
+		delete from fileboard where idx=#{idx}
 	</delete>
-	  
-	 <!-- 7. 마지막에 저장한 글의 idx를 읽어오는 쿼리 -->
-	 <select id="selectMaxIdx" resultType="int">
-	 	select max(idx) from fileboard
-	 </select>
-	 
-	 
+	
+	<!-- 7. 마지막에 저장한 글의 idx를 읽어오는 쿼리 -->
+	<select id="selectMaxIdx" resultType="int">
+		select max(idx) from  fileboard	
+	</select>
+	
 </mapper>

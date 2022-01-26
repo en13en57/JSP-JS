@@ -1,5 +1,5 @@
 <%@page import="java.util.Date"%>
-<%@page import="kr.green.file.mybatis.MybatisApp"%>
+<%@page import="kr.green.mybatis.MybatisApp"%>
 <%@page import="org.apache.ibatis.session.SqlSession"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt" %>

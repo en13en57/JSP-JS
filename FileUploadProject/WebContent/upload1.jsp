@@ -65,9 +65,9 @@ if(isMultipart){
 	        }
 	        // 지정 경로에 파일 복사 -- 이름 중복으로 인한 겹쳐쓰기를 방지하기 위해서 유일한 이름을 만들어 저장을 하고
 	        // 원본의 이름과 사본의 이름을 DB에 저장해 두었다가 다운로드시 원본의 이름으로 바꿔서 다운로드하게 하면된다.
-	        String saveFilleName = UUID.randomUUID().toString(); // 겹치지않는 ID를 만들어준다. -- 저장파일명으로 쓰자!!
-	        item.write(new File(path + File.separator + saveFilleName));
-	        out.println("저장 파일 : " + path + File.separator + saveFilleName + "<br>");
+	        String saveFileName = UUID.randomUUID().toString(); // 겹치지않는 ID를 만들어준다. -- 저장파일명으로 쓰자!!
+	        item.write(new File(path + File.separator + saveFileName));
+	        out.println("저장 파일 : " + path + File.separator + saveFileName + "<br>");
 	    }	
 	}
 }else{

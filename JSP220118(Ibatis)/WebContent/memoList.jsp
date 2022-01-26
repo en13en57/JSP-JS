@@ -6,7 +6,7 @@
 <%-- 자주 코딩하는 코드가 있다면 별도로 만들어 놓고 필요시 include하면 편리하다. --%>
 <%@ include file="include.jsp" %>
 <%
-	// 페이지 정보를 얻어오자!!!
+	// 페이지 정보를 얻어오자!!!1
 	PagingVO<MemoVO> pagingVO = MemoService.getInstance().selectList(currentPage, pageSize, blockSize);
 	request.setAttribute("pv", pagingVO); // EL로 출력하기 위해서는 영역에 저장되어야 한다.
 %>
@@ -49,6 +49,7 @@
 			return false;
 		}
 		var value = $("#content").val();
+		
 		if(value==null || value.trim().length==0){
 			alert('내용은 반드시 입력해야 합니다.');
 			$("#content").val("");
