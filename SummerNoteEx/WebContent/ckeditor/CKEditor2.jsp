@@ -15,18 +15,15 @@
 <%-- 부트스트랩을 사용하기 위한 준비 끝 --%>
 <script type="text/javascript">
 $(function(){
-	CKEDITOR.replace('editor1',{
-		filebrowserUploadUrl: '${pageContext.request.contextPath }/ckeditor/fileupload.jsp'
+	CKEDITOR.replace('editor',{
+		filebrowserUploadUrl: '${pageContext.request.contextPath }/ckeditor/fileUpload.jsp'
 	});
 });
 </script>
-<style type="text/css">
-
-</style>
 </head>
 <body>
-	<form action="result4.jsp" method="post">
-		<textarea name="editor1"></textarea>
+	<form action="result.jsp" method="post">
+		<textarea name="editor" id="editor"></textarea>
 		<br />
 		<button class="btn btn-outline-success btn-sm">전송하기</button>
 	</form>

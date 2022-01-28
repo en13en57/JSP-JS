@@ -23,7 +23,7 @@
 </style>
 </head>
 <body>
-	<form action="result3.jsp" method="post">
+	<form action="result.jsp" method="post">
 		<textarea name="editor1"></textarea>
 		<br />
 		<button class="btn btn-outline-success btn-sm">전송하기</button>
