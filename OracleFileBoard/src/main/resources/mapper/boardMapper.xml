@@ -5,16 +5,5 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-	<!--  
-	태그 1개가 메서드 1개라고 보시면 됩니다. 
-	id : 메서드명
-	parameterType  : 매개변수타입
-	resultCType    : 리턴 타입
-	<![CDATA[ ]]>  : CDATA섹션인데 SQL명령에 
-	                 >, >= , < , <= 등이 들어갔을때 태그가 아니라고 알려주는것이다. 
-	                 
-	SQL 명령중 바뀌는 부분의 #{}으로 감싸준다. 그러면 변수의 값을 ''안에 써서 완성해 준다.
-	만약 바뀌는 부분이 필드명이나 테이블명이면 ''가 없어야 하므로 ${}로 감싸준다.
-	-->
 
 </mapper>
