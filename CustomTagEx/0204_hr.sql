@@ -1,0 +1,31 @@
+-- HR계정입니다
+SELECT * FROM EMPLOYEES e ;
+SELECT COUNT(*) FROM EMPLOYEES e ;
+
+-- 이름으로 정렬한 후 21~30번까지만 조회하는 쿼리를 작성하시오!
+SELECT FIRST_NAME || ' ' || LAST_NAME 이름 FROM EMPLOYEES e ORDER BY LAST_NAME;
+
+-- 원하는 범위의 행만 가져오는 쿼리
+
+SELECT 
+	ROWNUM RNUM, Q.*
+FROM 
+	(SELECT FIRST_NAME || ' ' || LAST_NAME 이름 FROM EMPLOYEES e ORDER BY LAST_NAME) Q -- 정렬한다. 
+WHERE 
+	ROWNUM<=30; -- 뒷자리 잘라낸다.
+	
+SELECT 
+	r.*
+FROM 
+	(
+	SELECT 
+		ROWNUM RNUM, Q.*
+	FROM 
+		(SELECT FIRST_NAME || ' ' || LAST_NAME 이름 FROM EMPLOYEES e ORDER BY LAST_NAME) Q
+	WHERE 
+		ROWNUM<=30
+	) r
+WHERE 
+	rnum>=21; -- 앞자리 잘라낸다.
+	
+	
