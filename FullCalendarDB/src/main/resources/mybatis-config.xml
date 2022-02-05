@@ -3,22 +3,16 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<!-- 프로퍼티 파일 사용하겠다. -->
+	<!-- 프로퍼티 파일 이름 지정 -->
 	<properties resource="db.properties"></properties>
-
-	<!-- 긴 클래스 이름을 줄여서 사용하기 위해 별명을 등록한다. -->
-	<!-- vo 생성시마다 추가 -->
-	<!-- 
-	 -->
+	<!-- VO를 만들때마다 1개씩 추가해라 -->
 	<typeAliases>
 		<typeAlias type="kr.green.cal.vo.CalendarVO" alias="CalendarVO"/>
 	</typeAliases>
 
 	<environments default="development">
 		<environment id="development">
-			<!-- 트랜젝션은 JDBC API를 사용하겠다. -->
 			<transactionManager type="JDBC" />
-			<!-- DB 연결 -->
 			<dataSource type="POOLED">
 				<property name="driver" value="${o.driver}" />
 				<property name="url" value="${o.url}" />
@@ -27,8 +21,7 @@
 			</dataSource>
 		</environment>
 	</environments>
-	<!-- 실행할 SQL명령어들이 들어 있는 XML파일 지정 -->
-	<!-- mapper 생성시마다 추가 -->
+	<!-- 매퍼파일 만들때 마다 추가하라 -->
 	<mappers>
 		<mapper resource="mapper/testMapper.xml" />
 		<mapper resource="mapper/calendarMapper.xml" />

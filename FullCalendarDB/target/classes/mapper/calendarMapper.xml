@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- SQL 명령어 -->
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="calendar">
 
 	<resultMap type="CalendarVO" id="calMap"> 
@@ -14,7 +12,10 @@
 	<select id="selectList" resultMap="calMap">
 		SELECT 
 			id, 
+			groupid,
 			title, 
+			writer,
+			content,
 			TO_char(start1, 'YYYY-MM-DD"T"HH24:MI:SS') start1, 
 			TO_char(end1+1, 'YYYY-MM-DD"T"HH24:MI:SS') end1, 
 			ALLDAY, 
@@ -23,5 +24,16 @@
 			BORDERCOLOR 
 		FROM 
 			CALENDAR
-		</select>
+	</select>
+	
+	<update id="updateDrop" parameterType="hashmap">
+		update CALENDAR set start1 = TO_DATE(#{start1}, 'YYYY-MM-DD HH:MI'), end1 = TO_DATE(#{end1}, 'YYYY-MM-DD HH:MI') where id=#{id}
+	</update>
+
+	<insert id="insert" parameterType="CalendarVO">
+	
+	INSERT INTO calendar values(cal_seq.nextval,'',#{title},'test', #{content},to_date(#{start},'YYYY-MM-DD HH24:MI:SS'), 
+	                            to_date(#{end},'YYYY-MM-DD HH24:MI:SS'),#{allDays},#{textColor},#{backgroundColor},'navy')
+	                            
+	</insert>
 </mapper>

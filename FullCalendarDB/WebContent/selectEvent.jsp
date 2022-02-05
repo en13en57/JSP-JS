@@ -8,4 +8,3 @@
 	Gson gson = new Gson();
 	out.println(gson.toJson(list));
 %>
-

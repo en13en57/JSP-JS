@@ -9,6 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
 </head>
 <body>
 	<%
@@ -16,11 +22,8 @@
 	InputStream inputStream = Resources.getResourceAsStream(resource);
 	SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 	SqlSession sqlSession = sqlSessionFactory.openSession();
-	
-	out.println("연결 성공 : " + sqlSession + "<br>");
-	
+	out.println("연결 성공 : " + sqlSession);
 	sqlSession.close();
-	
 	%>
 </body>
 </html>

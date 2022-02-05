@@ -27,81 +27,81 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <%-- 부트스트랩을 사용하기 위한 준비 끝 --%>
 <script type="text/javascript">
-$(function() {
-	var calendarEl = document.getElementById('calendar'); // id찾기
-	// 지정 아이디를 넣어 객체 생성 : (표시할객체, 옵션)
-	var calendar = new FullCalendar.Calendar(calendarEl, {
-		locale : 'ko', // 로케일
-		initialView : 'dayGridMonth',
-		headerToolbar : {
-			start : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth', // will normally be on the left. if RTL, will be on the right
-			center : 'title',
-			end : 'prevYear,prev,today,next,nextYear' // will normally be on the right. if RTL, will be on the left
-		},
-		buttonText : {
-			today : '오늘',
-			month : '월',
-			week : '주',
-			day : '일',
-			list : '목록'
-		},
-		// 이벤트
-		events : [ {
-			title : 'All Day Event',
-			start : '2022-01-01',
-		}, {
-			title : 'Long Event',
-			start : '2022-01-07',
-			end : '2022-01-10'
-		}, {
-			groupId : 999,
-			title : 'Repeating Event',
-			start : '2022-01-09T16:00:00'
-		}, {
-			groupId : 999,
-			title : 'Repeating Event',
-			start : '2022-01-16T16:00:00'
-		}, {
-			title : 'Conference',
-			start : '2022-01-11',
-			end : '2022-01-13'
-		}, {
-			title : 'Meeting',
-			start : '2022-01-12T10:30:00',
-			end : '2022-01-12T12:30:00'
-		}, {
-			title : 'Lunch',
-			start : '2022-01-12T12:00:00'
-		}, {
-			title : 'Meeting',
-			start : '2022-01-12T14:30:00'
-		}, {
-			title : 'Happy Hour',
-			start : '2022-01-12T17:30:00'
-		}, {
-			title : 'Dinner',
-			start : '2022-01-12T20:00:00'
-		}, {
-			title : 'Birthday Party',
-			start : '2022-01-13T07:00:00'
-		}, {
-			title : 'Click for Google',
-			url : 'http://google.com/', // 클릭시 해당 url로 이동
-			start : '2022-01-28'
-		} ]
+	$(function() {
+		var calendarEl = document.getElementById('calendar'); // id찾기
+		// 지정 아이디를 넣어 객체 생성 : (표시할객체, 옵션)
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			locale : 'ko', // 로케일
+			initialView : 'dayGridMonth',
+			headerToolbar : {
+				start : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth', // will normally be on the left. if RTL, will be on the right
+				center : 'title',
+				end : 'prevYear,prev,today,next,nextYear' // will normally be on the right. if RTL, will be on the left
+			},
+			buttonText : {
+				today : '오늘',
+				month : '월',
+				week : '주',
+				day : '일',
+				list : '목록'
+			},
+			// 이벤트
+			events : [ {
+				title : 'All Day Event',
+				start : '2022-01-01',
+			}, {
+				title : 'Long Event',
+				start : '2022-01-07',
+				end : '2022-01-10'
+			}, {
+				groupId : 999,
+				title : 'Repeating Event',
+				start : '2022-01-09T16:00:00'
+			}, {
+				groupId : 999,
+				title : 'Repeating Event',
+				start : '2022-01-16T16:00:00'
+			}, {
+				title : 'Conference',
+				start : '2022-01-11',
+				end : '2022-01-13'
+			}, {
+				title : 'Meeting',
+				start : '2022-01-12T10:30:00',
+				end : '2022-01-12T12:30:00'
+			}, {
+				title : 'Lunch',
+				start : '2022-01-12T12:00:00'
+			}, {
+				title : 'Meeting',
+				start : '2022-01-12T14:30:00'
+			}, {
+				title : 'Happy Hour',
+				start : '2022-01-12T17:30:00'
+			}, {
+				title : 'Dinner',
+				start : '2022-01-12T20:00:00'
+			}, {
+				title : 'Birthday Party',
+				start : '2022-01-13T07:00:00'
+			}, {
+				title : 'Click for Google',
+				url : 'http://google.com/', // 클릭시 해당 url로 이동
+				start : '2022-01-28'
+			} ]
 
-	});
-	calendar.render(); // 그려줘!!!
+		});
+		calendar.render(); // 그려줘!!!
 
-	calendar.on('dateClick', function(info) {
-		alert(info.dateStr + "날짜를 눌렀냐!!");
+		calendar.on('dateClick', function(info) {
+			alert(info.dateStr + "를 눌렀냐!!");
+		});
 	});
-});
 </script>
 <style type="text/css">
 </style>
 </head>
 <body>
-	<div id="calendar"></div>
+	<div id='calendar'></div>
 </body>
 </html>
