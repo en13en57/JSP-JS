@@ -11,6 +11,7 @@
 <%
 	List<CategoryVO> list = CategoryServiceImpl.getInstance().selectList();
 	request.setAttribute("list", list);
+	
 %>
 <!DOCTYPE html>
 <html>
