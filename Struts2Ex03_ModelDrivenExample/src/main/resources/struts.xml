@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"https://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- namespace가 경로가 된다. extends="struts-default"는 스트러츠 기본 설정값을 상속받겠다. -->
+	<package name="user" namespace="/" extends="struts-default">
+		<!-- 변수를 선언시 객체이름.필드명 으로 접근 하는 방법 -->
+		<action name="">
+			<result>/WEB-INF/views/loginObject.jsp</result>
+		</action>
+		<action name="login" class="kr.green.struts2.LoginAction">
+			<result name="success">/WEB-INF/views/homeObject.jsp</result>
+			<result name="input">/WEB-INF/views/error.jsp</result>
+		</action>
+
+		<!-- 변수를 선언시 필드명 으로 접근 하는 방법 -->
+		<action name="home">
+			<result>/WEB-INF/views/loginModel.jsp</result>
+		</action>
+		<action name="loginModel" class="kr.green.struts2.LoginModelDrivenAction">
+			<result name="success">/WEB-INF/views/homeModel.jsp</result>
+			<result name="input">/WEB-INF/views/errorModel.jsp</result>
+		</action>
+	</package>
+	
+</struts>
