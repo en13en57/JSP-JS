@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SQL 명령어 -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+ 
+ 	<!-- 1. 전체 개수 구하기 -->
+	<select id="selectCount" resultType="int">
+		select count(*) from board
+	</select>
+
+	<!-- 2. 1개 글 구하기 -->
+	<select id="selectByIdx" parameterType="int" resultType="BoardVO">
+		select * from board where idx = #{idx}
+	</select>
+
+	<!-- 3. 1페이지 글 구하기 -->
+	<select id="selectList" parameterType="hashmap" resultType="BoardVO">
+		select
+			R.*
+		from 	
+			(
+			select
+				rownum rnum, Q.* 
+			from
+				(select * from board order by idx desc) Q
+			where
+				<![CDATA[
+				rownum <= #{endNo}
+				]]>
+			) R
+		where
+			<![CDATA[
+			rnum >= #{startNo}
+				]]>
+	</select>
+
+	<!-- 4. 저장하기 -->
+	<insert id="insert" parameterType="BoardVO">
+		INSERT INTO board 
+		(idx, name, password, subject, content, ip) 
+		VALUES 
+		(board_idx_seq.nextval, #{name}, #{password}, #{subject}, #{content}, #{ip})
+	</insert>
+
+	<!-- 5. 수정하기 -->
+	<update id="update" parameterType="BoardVO">
+		update board set
+			subject = #{subject}, 
+			content = #{content}, 
+			regDate = sysdate, 
+			ip = #{ip} 
+		where idx = #{idx}
+		
+			
+	</update>
+	
+	<!-- 6. 삭제하기 -->
+	<delete id="delete" parameterType="int">
+		delete from board where idx = #{idx} 
+	</delete>
+	
+	<!-- 7. 조회수 증가하기 -->
+	<update id="updateHit" parameterType="int">
+		update board set
+			hit = hit +1
+		where idx = #{idx}
+		
+	</update>
+	
+</mapper>
