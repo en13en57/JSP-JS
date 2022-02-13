@@ -1,0 +1,96 @@
+-- 21 ~ 30번문제를 푸시오
+-- ===========================================================================================
+-- 21. 동일한 직업을 가진 사원들의 총 수를 조회한다.
+SELECT 	JOB_ID , count(JOB_ID) FROM EMPLOYEES e  
+GROUP BY JOB_ID ORDER BY  JOB_ID ;
+
+-- 22-1. 매니저로 근무하는 사원들의 총 수를 조회한다.
+SELECT count(MANAGER_ID) FROM  EMPLOYEES e; -- 매니저가 있는 사원의 수가 나온다.
+SELECT count(DISTINCT MANAGER_ID) FROM  EMPLOYEES e; -- 매니저가 몇명이니까 중복을 제거하면 매니저의 수가 된다.
+
+-- 22-2. 매니저로 근무하는 사원들의 총 수를 조회한다.
+SELECT count(DISTINCT MANAGER_ID) FROM EMPLOYEES WHERE MANAGER_ID IS NOT NULL;
+
+-- 23. 사내의 최대 연봉 및 최소 연봉의 차이를 조회한다.
+SELECT MAX(SALARY) - MIN(SALARY) "연봉차이" FROM EMPLOYEES e;
+
+-- 24. 매니저의 사번 및 그 매니저 밑 사원들 중 최소 연봉을 받는 사원의 연봉을 조회한다.
+--     매니저가 없는 사람들은 제외한다.
+--     최소 연봉이 6000 미만인 경우는 제외한다.
+--     연봉 기준 역순으로 조회한다.
+SELECT 	 MANAGER_ID "매니저", MIN(SALARY) "최소연봉" FROM  EMPLOYEES 
+WHERE 	 MANAGER_ID IS NOT NULL --  매니저가 없는 사람들은 제외한다.
+GROUP BY MANAGER_ID 
+HAVING   MIN(SALARY)>=6000 -- 최소 연봉이 6000 미만인 경우는 제외한다.
+ORDER BY 2 DESC; -- 연봉 기준 역순으로 조회한다.
+
+-- 25. 부서 명, 위치 ID, 각 부서 별 사원 총 수, 각 부서 별 평균 연봉을 조회한다.
+--     평균 연봉은 소수점 2 자리까지만 표현한다.
+SELECT d.DEPARTMENT_NAME "부서명" , d.LOCATION_ID "지역코드" , count(e.EMPLOYEE_ID) "인원수", round(avg(SALARY),2) "평균연봉"
+FROM EMPLOYEES e , DEPARTMENTS d 
+WHERE e.DEPARTMENT_ID = d.DEPARTMENT_ID 
+GROUP BY d.DEPARTMENT_NAME , d.LOCATION_ID 
+ORDER BY d.LOCATION_ID ;
+-- ROLLUP
+SELECT d.DEPARTMENT_NAME "부서명" , d.LOCATION_ID "지역코드" , count(e.EMPLOYEE_ID) "인원수", round(avg(SALARY),2) "평균연봉"
+FROM EMPLOYEES e , DEPARTMENTS d 
+WHERE e.DEPARTMENT_ID = d.DEPARTMENT_ID 
+GROUP BY ROLLUP(d.DEPARTMENT_NAME , d.LOCATION_ID); 
+-- CUBE
+SELECT d.DEPARTMENT_NAME "부서명" , d.LOCATION_ID "지역코드" , count(e.EMPLOYEE_ID) "인원수", round(avg(SALARY),2) "평균연봉"
+FROM EMPLOYEES e , DEPARTMENTS d 
+WHERE e.DEPARTMENT_ID = d.DEPARTMENT_ID 
+GROUP BY CUBE(d.DEPARTMENT_NAME , d.LOCATION_ID); 
+
+-- 26. 총 사원 수 및 2001, 2002, 2003, 2004 년도 별 고용된 사원들의 총 수를 다음과 같이 조회한다.
+SELECT count(*) "총사원수" FROM EMPLOYEES; 
+SELECT count(*) "사원수(2001)" FROM EMPLOYEES WHERE HIRE_DATE LIKE '01%'; 
+SELECT count(*) "사원수(2002)" FROM EMPLOYEES WHERE HIRE_DATE LIKE '02%'; 
+SELECT count(*) "사원수(2003)" FROM EMPLOYEES WHERE HIRE_DATE LIKE '03%'; 
+SELECT count(*) "사원수(2004)" FROM EMPLOYEES WHERE HIRE_DATE LIKE '04%'; 
+
+SELECT
+	(SELECT count(*) FROM EMPLOYEES) "총사원수",
+	(SELECT count(*) FROM EMPLOYEES WHERE HIRE_DATE LIKE '01%') "사원수(2001)",
+	(SELECT count(*) FROM EMPLOYEES WHERE HIRE_DATE LIKE '02%') "사원수(2002)",
+	(SELECT count(*) FROM EMPLOYEES WHERE HIRE_DATE LIKE '03%') "사원수(2003)",
+	(SELECT count(*) FROM EMPLOYEES WHERE HIRE_DATE LIKE '04%') "사원수(2004)"
+FROM 
+	DUAL;
+-- 27.  각 부서별 각 직업 별 연봉 총 합 및 각 부서별 연봉 총 합을 조회한다. 
+SELECT 	DEPARTMENT_ID , JOB_ID , SUM(SALARY) FROM EMPLOYEES GROUP BY DEPARTMENT_ID , JOB_ID ORDER BY DEPARTMENT_ID;
+SELECT 	DEPARTMENT_ID , JOB_ID , SUM(SALARY) FROM EMPLOYEES GROUP BY ROLLUP(DEPARTMENT_ID , JOB_ID) ORDER BY DEPARTMENT_ID; -- 이놈
+SELECT 	DEPARTMENT_ID , JOB_ID , SUM(SALARY) FROM EMPLOYEES GROUP BY CUBE(DEPARTMENT_ID , JOB_ID) ORDER BY DEPARTMENT_ID;
+
+-- 28. LAST_NAME 이 Zlotkey 와 동일한 부서에 근무하는 모든 사원들의 사번 및 고용날짜를 조회한다.
+--     결과값에서 Zlotkey 는 제외한다.
+SELECT DEPARTMENT_ID FROM EMPLOYEES e2 WHERE LAST_NAME = 'Zlotkey';
+SELECT 
+	EMPLOYEE_ID , LAST_NAME , DEPARTMENT_ID, HIRE_DATE 
+FROM 
+	EMPLOYEES e 
+WHERE 
+	DEPARTMENT_ID = (SELECT DEPARTMENT_ID FROM EMPLOYEES e2 WHERE LAST_NAME = 'Zlotkey') AND LAST_NAME != 'Zlotkey';
+
+-- 29. 회사 전체 평균 연봉보다 더 받는 사원들의 사번 및 LAST_NAME 을 조회한다.
+SELECT avg(SALARY) FROM EMPLOYEES;
+SELECT 	EMPLOYEE_ID , LAST_NAME , SALARY FROM EMPLOYEES e  WHERE  SALARY > (SELECT avg(SALARY) FROM EMPLOYEES e2 );
+
+-- 30-1. LAST_NAME 에 u 가 포함되는 사원들과 동일 부서에 근무하는 사원들의 사번 및 LAST_NAME 을 조회한다.
+SELECT DISTINCT DEPARTMENT_ID FROM EMPLOYEES e WHERE LAST_NAME LIKE '%u%';
+
+SELECT 	
+	EMPLOYEE_ID , LAST_NAME , DEPARTMENT_ID 
+FROM 
+	EMPLOYEES 
+WHERE  
+	DEPARTMENT_ID IN (SELECT DISTINCT DEPARTMENT_ID FROM EMPLOYEES e WHERE LAST_NAME LIKE '%u%' );
+
+-- 30-2. (VIEW 이용) LAST_NAME 에 u 가 포함되는 사원들과 동일 부서에 근무하는 사원들의 사번 및 LAST_NAME 을 조회한다.
+SELECT 	
+	EMPLOYEE_ID , LAST_NAME , E.DEPARTMENT_ID 
+FROM 
+	EMPLOYEES E, (SELECT DISTINCT DEPARTMENT_ID FROM EMPLOYEES e WHERE LAST_NAME LIKE '%u%' ) U
+WHERE  
+	U.DEPARTMENT_ID = E.DEPARTMENT_ID ;
+
